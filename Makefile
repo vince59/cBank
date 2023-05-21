@@ -52,4 +52,8 @@ clean:
 	@echo "Cleaning..."
 	$(RM) -r $(OBJDIR) $(BINDIR) $(LIBDIR)
 
-.PHONY: all clean 
+# Print variables
+print-%:
+	@echo $* = $($*)
+
+.PHONY: all clean print-%

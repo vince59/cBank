@@ -1,6 +1,0 @@
-SELECT * 
-FROM `bank_account_details` 
-LEFT JOIN sub_categories on sub_categories.id=bank_account_details.sub_category_id
-LEFT JOIN categories on sub_categories.category_id=categories.id
-LEFT JOIN bank_accounts on bank_account_details.bank_account_id=bank_accounts.id
-WHERE 1

@@ -8,6 +8,7 @@ OBJDIR := obj
 BINDIR := bin
 LIBDIR := lib
 INCDIR := include
+LIBNAM := libcbank.a
 
 # Source files
 SOURCES := $(shell find $(SRCDIR) -name '*.c')
@@ -21,7 +22,7 @@ LIB_OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(LIB_SOURCES:.c=.o))
 EXECUTABLES := $(patsubst $(SRCDIR)/%.c,$(BINDIR)/%,$(MAIN_SOURCES))
 
 # Library name
-LIBRARY := $(LIBDIR)/libmylibrary.a
+LIBRARY := $(LIBDIR)/$(LIBNAM)
 
 # Include directories
 INCLUDES := -I$(INCDIR)

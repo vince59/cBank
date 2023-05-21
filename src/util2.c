@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "cbanklib.h"
+#include "libcbank.h"
 
 int main(int argc, char *argv[])
 {

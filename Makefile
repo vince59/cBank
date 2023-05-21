@@ -1,36 +1,59 @@
-export DEBUG=yes
-export CC=gcc
-#LOG_LEVEL = 1 : error only, 2 : error and warning, 3 : error warning and info
-ifeq ($(DEBUG),yes)
-	CFLAGS=-I./include/ -I../lib/include/ -W -Wall  -pedantic -g -D LOG_LEVEL=3
-else
-	CFLAGS=-I./include/ -I../lib/include/ -W -Wall  -pedantic -D LOG_LEVEL=1
-endif
-export CFLAGS
-export LDFLAGS=-L../lib -lCbank
-LOADER_DIR=./loader
-LIB_DIR=./lib
-EXEC=cBank
-MAKEFLAGS += --no-print-directory
-all: $(EXEC)
+# Compiler options eee
+CC := gcc
+CFLAGS := -Wall -Wextra -g
 
-$(EXEC):
-ifeq ($(DEBUG),yes)
-	@echo "Debug enabled"
-else
-	@echo "Make in release mode"
-endif
-	@(cd $(LIB_DIR) && $(MAKE))
-	@(cd $(LOADER_DIR) && $(MAKE))
+# Directories
+SRCDIR := src
+OBJDIR := obj
+BINDIR := bin
+LIBDIR := lib
+INCDIR := include
 
+# Source files
+SOURCES := $(shell find $(SRCDIR) -name '*.c')
+LIB_SOURCES := $(wildcard $(SRCDIR)/lib/*.c)
+MAIN_SOURCES := $(filter-out $(LIB_SOURCES), $(SOURCES))
+
+# Object files
+LIB_OBJECTS := $(patsubst $(SRCDIR)/%,$(OBJDIR)/%,$(LIB_SOURCES:.c=.o))
+
+# Binary names
+EXECUTABLES := $(patsubst $(SRCDIR)/%.c,$(BINDIR)/%,$(MAIN_SOURCES))
+
+# Library name
+LIBRARY := $(LIBDIR)/libmylibrary.a
+
+# Include directories
+INCLUDES := -I$(INCDIR)
+
+# Default rule
+all: $(EXECUTABLES)
+
+# Rule to create each target executable
+$(BINDIR)/%: $(OBJDIR)/%.o $(LIBRARY)
+	@mkdir -p $(BINDIR)
+	@echo "Linking $@..."
+	$(CC) $(CFLAGS) -o $@ $< $(LIBRARY)
+
+# Rule to compile object files
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
+	@mkdir -p $(dir $@)
+	@echo "Compiling $<..."
+	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
+
+# Rule to create the library
+$(LIBRARY): $(LIB_OBJECTS)
+	@mkdir -p $(LIBDIR)
+	@echo "Creating library $@..."
+	ar rcs $@ $^
+
+# Clean rule
 clean:
-	@(cd $(LIB_DIR) && $(MAKE) $@)
-	@(cd $(LOADER_DIR) && $(MAKE) $@)
-	
-mrproper: clean
-	@(cd $(LIB_DIR) && $(MAKE) $@)
-	@(cd $(LOADER_DIR) && $(MAKE) $@)
-	@rm -f ./cBank
-	@rm -f ./loader
+	@echo "Cleaning..."
+	$(RM) -r $(OBJDIR) $(BINDIR) $(LIBDIR)
 
-	
+# Print variables
+print-%:
+	@echo $* = $($*)
+
+.PHONY: all clean print-%

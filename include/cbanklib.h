@@ -1,6 +1,3 @@
-/*
-** Cbank 12/06/2022
-*/
 
 #ifndef UTILS__H
 #define UTILS__H
@@ -9,7 +6,6 @@
 #define FALSE 0
 
 void about(void);
+void about2(void);
 
 #endif
-
-

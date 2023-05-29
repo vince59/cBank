@@ -1,6 +1,6 @@
 # Compiler options eee
 CC := gcc
-CFLAGS := -Wall -Wextra -g
+CFLAGS := -Wall -Wextra -g -W -pedantic 
 
 # Directories
 SRCDIR := src

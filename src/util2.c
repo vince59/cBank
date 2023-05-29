@@ -4,11 +4,14 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 
 #include "libcbank.h"
 
 int main(int argc, char *argv[])
 {
-    about2();
-    return EXIT_SUCCESS;
+    about();
+    if (argc>=2 && strcmp("-v",argv[1])==0)
+        printf("Hello\n");
+    return 0;
 }

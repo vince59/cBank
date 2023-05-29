@@ -1,0 +1,60 @@
+/*
+** Cbank 22/05/2023
+** fonctions pour la gestion des comptes bancaires
+*/
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+
+#include "libcbank.h"
+
+extern Node * head_acc;
+
+void save_account() {
+    FILE* file = fopen(ACCOUNT_CSV, "w");
+
+    if (file == NULL) {
+        printf("Failed to create file: %s\n", ACCOUNT_CSV);
+        exit(1);
+    }
+    fprintf(file, "id;name;balance\n"); // Ecriture de l'entête
+    
+    Node *n=head_acc;
+    Account* acc=NULL;
+    while (n != NULL) {
+        acc=n->data;
+        fprintf(file, "%s;%s;%.2f\n", acc->id,acc->name,acc->balance);
+        n = n->next;
+    }
+
+    fclose(file);
+}
+
+void load_account() {
+    FILE* file = fopen(ACCOUNT_CSV, "r");
+    if (file == NULL) {
+        printf("Failed to open file: %s\n", ACCOUNT_CSV);
+        exit(1);
+    }
+
+    char line[100];
+    fscanf(file, "%[^\n]\n", line); // On zap l'entête
+
+    head_acc=NULL;
+    while (fgets(line, sizeof(line), file) != NULL) {
+        char id[20], name[50];
+        float balance;
+
+        if (sscanf(line, "%[^;];%[^;];%f", id, name, &balance) == 3) {
+            Account *acc = (Account*)malloc(sizeof(Account));
+            strcpy(acc->id, id);
+            strcpy(acc->name, name);
+            acc->balance = balance;
+
+            add_node(&head_acc, acc);
+        }
+    }
+
+    fclose(file);
+}

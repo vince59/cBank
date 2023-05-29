@@ -1,7 +1,7 @@
 /*
 ** Cbank 22/05/2023
 ** Lecture du fichier des comptes bancaires
-** ld_acc : ListData_ACCount
+** ld_acc : LoadD_ACCount
 */
 
 #include <stdlib.h>

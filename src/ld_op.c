@@ -1,7 +1,7 @@
 /*
 ** Cbank 22/05/2023
 ** Lecture du fichier des opérations
-** ld_op : ListData_OPeration
+** ld_op : LoaD_OPeration
 */
 
 #include <stdlib.h>
@@ -19,10 +19,6 @@ void print_list()
     while (n != NULL)
     {
         op = n->data;
-
-        // id,Operation_id,date,bank_lib1,bank_lib2,bank_ref,bank_info,bank_type,bank_category,bank_sub_category,category_id,amount;
-
-        // op->id,op->Operation_id,op->date,op->bank_lib1,op->bank_lib2,op->bank_ref,op->bank_info,op->bank_type,op->bank_category,op->bank_sub_category,op->category_id,op->amount;
 
         printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n", 
             op->id,

@@ -11,7 +11,8 @@
 
 extern Node * head_acc;
 
-void save_account() {
+int save_account() {
+    int nb=0;
     FILE* file = fopen(ACCOUNT_CSV, "w");
 
     if (file == NULL) {
@@ -25,13 +26,16 @@ void save_account() {
     while (n != NULL) {
         acc=n->data;
         fprintf(file, "%s;%s;%.2f\n", acc->id,acc->name,acc->balance);
+        nb++;
         n = n->next;
     }
 
     fclose(file);
+    return nb;
 }
 
-void load_account() {
+int load_account() {
+    int nb=0;
     FILE* file = fopen(ACCOUNT_CSV, "r");
     if (file == NULL) {
         printf("Failed to open file: %s\n", ACCOUNT_CSV);
@@ -51,10 +55,11 @@ void load_account() {
             strcpy(acc->id, id);
             strcpy(acc->name, name);
             acc->balance = balance;
-
+            nb++;
             add_node(&head_acc, acc);
         }
     }
 
     fclose(file);
+    return nb;
 }

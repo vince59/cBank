@@ -11,10 +11,11 @@
 
 extern Node *head_op;
 
-void save_operation()
+int save_operation()
 {
     FILE *file = fopen(OPERATION_CSV, "w");
 
+    int nb=0;
     if (file == NULL)
     {
         printf("Failed to create file: %s\n", OPERATION_CSV);
@@ -26,6 +27,7 @@ void save_operation()
     Operation *op = NULL;
     while (n != NULL)
     {
+        nb++;
         op = n->data;
         fprintf(file, "%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n",
                 op->id,
@@ -44,9 +46,10 @@ void save_operation()
     }
 
     fclose(file);
+    return nb;
 }
 
-void load_operation()
+int load_operation()
 {
     FILE *file = fopen(OPERATION_CSV, "r");
     if (file == NULL)
@@ -59,6 +62,7 @@ void load_operation()
     fscanf(file, "%[^\n]\n", line); // On zap l'entête
 
     head_op = NULL;
+    int nb=0;
     while (fgets(line, sizeof(line), file) != NULL)
     {
         Id id;
@@ -104,8 +108,10 @@ void load_operation()
             op->amount = amount;
 
             add_node(&head_op, op);
+            nb++;
         }
     }
 
     fclose(file);
+    return nb;
 }

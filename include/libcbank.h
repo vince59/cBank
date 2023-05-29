@@ -27,8 +27,8 @@ typedef struct Account {
     float balance;
 } Account;
 
-void save_account();
-void load_account();
+int save_account();
+int load_account();
 
 /* Opération */
 
@@ -51,8 +51,8 @@ typedef struct Operation {
     float amount;
 } Operation;
 
-void save_operation();
-void load_operation();
+int save_operation();
+int load_operation();
 
 /* Divers */
 

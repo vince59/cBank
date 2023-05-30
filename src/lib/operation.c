@@ -115,3 +115,43 @@ int load_operation()
     fclose(file);
     return nb;
 }
+
+Id next_operation_id(void)
+{
+    Operation *op = NULL;
+    Node *n = head_op;
+    Id max=0;
+    while (n != NULL)
+    {
+        op = n->data;
+        if (max<op->id) 
+            max=op->id; 
+        n = n->next;
+    }
+    return max++;
+}
+
+void print_operations()
+{
+    Operation *op = NULL;
+    Node *n = head_op;
+    while (n != NULL)
+    {
+        op = n->data;
+
+        printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n", 
+            op->id,
+            op->account_id,
+            op->date,
+            op->bank_lib1,
+            op->bank_lib2,
+            op->bank_ref,
+            op->bank_info,
+            op->bank_type,
+            op->bank_category,
+            op->bank_sub_category,
+            op->category_id,
+            op->amount);
+        n = n->next;
+    }
+}

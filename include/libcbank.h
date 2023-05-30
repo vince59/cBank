@@ -2,17 +2,18 @@
 #ifndef LIBCBANK__H
 #define LIBCBANK__H
 
-typedef unsigned long Id; 
+typedef unsigned long Id;
 
 /* Listes chainées */
 
-typedef struct Node {
+typedef struct Node
+{
     void *data;
-    struct Node* next;
+    struct Node *next;
 } Node;
 
-void add_node(Node** head, void* data);
-void free_list(Node* head);
+void add_node(Node **head, void *data);
+void free_list(Node *head);
 
 /* Comptes */
 
@@ -21,14 +22,15 @@ void free_list(Node* head);
 #define ACC_ID_LENGTH 6
 #define ACC_NAME_LENGTH 51
 
-typedef struct Account {
+typedef struct Account
+{
     char id[ACC_ID_LENGTH];
     char name[ACC_NAME_LENGTH];
     float balance;
 } Account;
 
-int save_account();
-int load_account();
+int save_account(void);
+int load_account(void);
 
 /* Opération */
 
@@ -36,7 +38,8 @@ int load_account();
 
 #define OP_LIB_LENGTH 100
 
-typedef struct Operation {
+typedef struct Operation
+{
     Id id;
     char account_id[ACC_ID_LENGTH];
     long date;
@@ -51,11 +54,14 @@ typedef struct Operation {
     float amount;
 } Operation;
 
-int save_operation();
-int load_operation();
+int save_operation(void);
+int load_operation(void);
+void print_operations(void);
+Id next_operation_id(void);
 
 /* Divers */
 
 void about(void);
+long cnv_date(char *sdate);
 
 #endif

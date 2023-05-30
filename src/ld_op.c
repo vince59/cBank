@@ -12,31 +12,6 @@
 
 extern Node *head_op;
 
-void print_list()
-{
-    Operation *op = NULL;
-    Node *n = head_op;
-    while (n != NULL)
-    {
-        op = n->data;
-
-        printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n", 
-            op->id,
-            op->account_id,
-            op->date,
-            op->bank_lib1,
-            op->bank_lib2,
-            op->bank_ref,
-            op->bank_info,
-            op->bank_type,
-            op->bank_category,
-            op->bank_sub_category,
-            op->category_id,
-            op->amount);
-        n = n->next;
-    }
-}
-
 // Générateur de données de test
 
 void gen_fake_opp()
@@ -86,7 +61,7 @@ int main(int argc, char *argv[])
     test();
     //load_operation();
     if (argc >= 2 && strcmp("-v", argv[1]) == 0)
-        print_list();
+        print_operations();
     free_list(head_op);
     return 0;
 }

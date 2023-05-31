@@ -128,7 +128,7 @@ Id next_operation_id(void)
             max=op->id; 
         n = n->next;
     }
-    return max++;
+    return ++max;
 }
 
 void print_operations()

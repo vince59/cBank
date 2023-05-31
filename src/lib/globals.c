@@ -16,7 +16,6 @@ void about(void)
 
 long cnv_date(char * sdate) 
 {
-    long date;
     char d[3],m[3],y[5];
     char result[10];
 
@@ -26,7 +25,31 @@ long cnv_date(char * sdate)
     strcat(result, m); 
     strcat(result, d);
 
-    date = atol(result);
-    
-    return date; 
+    return atol(result);
+}
+
+// passe de la chaine "45,15" au flotant 45.15
+
+float cnv_float(char * sfloat) 
+{
+char* decimalPointPos = strchr(sfloat, ',');
+    if (decimalPointPos != NULL) {
+        *decimalPointPos = '.'; // On remplace par un point
+    }
+    return atof(sfloat); 
+}
+
+// Remplace une sous chaine par une autre
+
+void replaceSubstring(char* str, const char* find, const char* replace) {
+    int findLen = strlen(find);
+    int replaceLen = strlen(replace);
+
+    char* found = strstr(str, find);
+    while (found != NULL) {
+        memmove(found + replaceLen, found + findLen, strlen(found + findLen) + 1);
+        memcpy(found, replace, replaceLen);
+
+        found = strstr(found + replaceLen, find);
+    }
 }

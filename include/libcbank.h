@@ -63,5 +63,7 @@ Id next_operation_id(void);
 
 void about(void);
 long cnv_date(char *sdate);
+float cnv_float(char * sfloat);
+void replaceSubstring(char* str, const char* find, const char* replace); 
 
 #endif

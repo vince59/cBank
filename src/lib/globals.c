@@ -7,9 +7,9 @@
 Node * head_acc; // liste des comptes
 Node * head_op; // liste des opérations
 
-void about(void)
+void about(char *msg)
 {
-    printf("Cbank V1.0\n");
+    printf("Cbank V1.0\n%s\n",msg);
 }
 
 // passe de la chaine "12/01/2023" à l'entier long 20230112

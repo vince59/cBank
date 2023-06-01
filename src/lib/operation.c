@@ -15,7 +15,7 @@ int save_operation()
 {
     FILE *file = fopen(OPERATION_CSV, "w");
 
-    int nb=0;
+    int nb = 0;
     if (file == NULL)
     {
         printf("Failed to create file: %s\n", OPERATION_CSV);
@@ -62,7 +62,7 @@ int load_operation()
     fscanf(file, "%[^\n]\n", line); // On zap l'entête
 
     head_op = NULL;
-    int nb=0;
+    int nb = 0;
     while (fgets(line, sizeof(line), file) != NULL)
     {
         Id id;
@@ -120,12 +120,12 @@ Id next_operation_id(void)
 {
     Operation *op = NULL;
     Node *n = head_op;
-    Id max=0;
+    Id max = 0;
     while (n != NULL)
     {
         op = n->data;
-        if (max<op->id) 
-            max=op->id; 
+        if (max < op->id)
+            max = op->id;
         n = n->next;
     }
     return ++max;
@@ -139,19 +139,40 @@ void print_operations()
     {
         op = n->data;
 
-        printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n", 
-            op->id,
-            op->account_id,
-            op->date,
-            op->bank_lib1,
-            op->bank_lib2,
-            op->bank_ref,
-            op->bank_info,
-            op->bank_type,
-            op->bank_category,
-            op->bank_sub_category,
-            op->category_id,
-            op->amount);
+        printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n",
+               op->id,
+               op->account_id,
+               op->date,
+               op->bank_lib1,
+               op->bank_lib2,
+               op->bank_ref,
+               op->bank_info,
+               op->bank_type,
+               op->bank_category,
+               op->bank_sub_category,
+               op->category_id,
+               op->amount);
         n = n->next;
     }
+}
+
+// vérifie si l'opération n'esite pas déjà, 1=doublon 0=pas de doublon
+
+int chk_duplicate_operation(Operation *op_curr)
+{
+    Operation *op = NULL;
+    Node *n = head_op;
+    while (n != NULL)
+    {
+        op = n->data;
+        if (op_curr->amount == op->amount && op_curr->date == op->date &&
+            strcmp(op_curr->account_id, op->account_id) == 0 &&
+            strcmp(op_curr->bank_lib1, op->bank_lib1) == 0 &&
+            strcmp(op_curr->bank_lib2, op->bank_lib2) == 0 &&
+            strcmp(op_curr->bank_ref, op->bank_ref) == 0 &&
+            strcmp(op_curr->bank_info, op->bank_info) == 0)
+            return 1;
+        n = n->next;
+    }
+    return 0;
 }

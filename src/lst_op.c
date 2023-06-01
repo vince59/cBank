@@ -1,7 +1,7 @@
 /*
 ** Cbank 22/05/2023
 ** Lecture du fichier des opérations
-** ld_op : LoaD_OPeration
+** lst_op : LiST_OPeration
 */
 
 #include <stdlib.h>
@@ -57,11 +57,12 @@ void test()
 
 int main(int argc, char *argv[])
 {
-    about();
-    test();
-    //load_operation();
+    about("Liste des opérations");
+    //test();
+    int nb=load_operation();
     if (argc >= 2 && strcmp("-v", argv[1]) == 0)
         print_operations();
+    printf("%d opérations\n",nb);
     free_list(head_op);
     return 0;
 }

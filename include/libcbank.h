@@ -31,6 +31,7 @@ typedef struct Account
 
 int save_account(void);
 int load_account(void);
+Account *find_acc_by_id(char *acc_id);
 
 /* Opération */
 
@@ -58,12 +59,13 @@ int save_operation(void);
 int load_operation(void);
 void print_operations(void);
 Id next_operation_id(void);
+int chk_duplicate_operation(Operation *op_curr);
 
 /* Divers */
 
-void about(void);
+void about(char *msg);
 long cnv_date(char *sdate);
-float cnv_float(char * sfloat);
-void replaceSubstring(char* str, const char* find, const char* replace); 
+float cnv_float(char *sfloat);
+void replaceSubstring(char *str, const char *find, const char *replace);
 
 #endif

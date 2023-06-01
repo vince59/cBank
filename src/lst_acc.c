@@ -1,7 +1,7 @@
 /*
 ** Cbank 22/05/2023
 ** Lecture du fichier des comptes bancaires
-** ld_acc : LoadD_ACCount
+** lst_acc : LiST_ACCount
 */
 
 #include <stdlib.h>
@@ -61,11 +61,12 @@ void test () {
 
 int main(int argc, char *argv[])
 {
-    about();
+    about("Liste des comptes bancaires");
     //test();
-    load_account();
+    int nb=load_account();
     if (argc>=2 && strcmp("-v",argv[1])==0)
         print_list();
+    printf("%d comptes\n",nb);
     free_list(head_acc);
     return 0;
 }

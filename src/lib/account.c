@@ -63,3 +63,18 @@ int load_account() {
     fclose(file);
     return nb;
 }
+
+Account *find_acc_by_id(char *acc_id)
+{
+    Account *acc = NULL;
+    Node *n = head_acc;
+
+    while (n != NULL)
+    {
+        acc = n->data;
+        if (strcmp(acc->id, acc_id) == 0)
+            return acc;
+        n = n->next;
+    }
+    return NULL;
+}

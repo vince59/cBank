@@ -11,11 +11,11 @@
 #include "libcbank.h"
 
 extern Node * head_kw;
+extern Node * head_op;
 
-void print_list()
+void print_list(Node *n)
 {
     Keyword* kw=NULL;
-    Node *n=head_kw;
     while (n != NULL) {
         kw=n->data;
         printf("%d;%d;%s\n",kw->id,kw->category_id,kw->name);
@@ -76,13 +76,21 @@ void test () {
     load_keyword();
 }
 
+void test2 () {
+    load_operation();
+    Node *kw = extract_kw((Operation*)head_op->data);
+    print_list(kw);
+}
+
 int main(int argc, char *argv[])
 {
     about("Liste des mots clé");
     //test();
+    test2();
+    return 0;
     int nb=load_keyword();
     if (argc>=2 && strcmp("-v",argv[1])==0)
-        print_list();
+        print_list(head_kw);
     printf("Nombre de mots clés : %d\n",nb);
     free_list(head_kw);
     return 0;

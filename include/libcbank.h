@@ -48,22 +48,6 @@ typedef struct Category
 int save_category(void);
 int load_category(void);
 
-/* Mots clés */
-
-#define KW_CSV "./data/keyword.csv"
-
-#define KW_NAME_LENGTH 51
-
-typedef struct Keyword
-{
-    int id;
-    int category_id;
-    char name[KW_NAME_LENGTH];
-} Keyword;
-
-int save_keyword(void);
-int load_keyword(void);
-
 /* Opération */
 
 #define OPERATION_CSV "./data/operation.csv"
@@ -91,6 +75,23 @@ int load_operation(void);
 void print_operations(void);
 Id next_operation_id(void);
 int chk_duplicate_operation(Operation *op_curr);
+
+/* Mots clés */
+
+#define KW_CSV "./data/keyword.csv"
+
+#define KW_NAME_LENGTH 51
+
+typedef struct Keyword
+{
+    int id;
+    int category_id;
+    char name[KW_NAME_LENGTH];
+} Keyword;
+
+int save_keyword(void);
+int load_keyword(void);
+Node *extract_kw(Operation *op);
 
 /* Divers */
 

@@ -29,7 +29,7 @@ int save_operation()
     {
         nb++;
         op = n->data;
-        fprintf(file, "%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n",
+        fprintf(file, "%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%d;%.2f;\n",
                 op->id,
                 op->account_id,
                 op->date,
@@ -75,10 +75,10 @@ int load_operation()
         char bank_type[OP_LIB_LENGTH];
         char bank_category[OP_LIB_LENGTH];
         char bank_sub_category[OP_LIB_LENGTH];
-        Id category_id;
+        int category_id;
         float amount;
 
-        if (sscanf(line, "%lu;%[^;];%ld;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%lu;%f",
+        if (sscanf(line, "%lu;%[^;];%ld;%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%d;%f",
                    &id,
                    account_id,
                    &date,
@@ -139,7 +139,7 @@ void print_operations()
     {
         op = n->data;
 
-        printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%lu;%.2f;\n",
+        printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%d;%.2f;\n",
                op->id,
                op->account_id,
                op->date,

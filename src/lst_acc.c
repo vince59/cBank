@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
     int nb=load_account();
     if (argc>=2 && strcmp("-v",argv[1])==0)
         print_list();
-    printf("%d comptes\n",nb);
+    printf("Nombre de comptes : %d\n",nb);
     free_list(head_acc);
     return 0;
 }

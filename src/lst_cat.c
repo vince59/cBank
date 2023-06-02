@@ -58,11 +58,11 @@ void test () {
 int main(int argc, char *argv[])
 {
     about("Liste des categories");
-    test();
-    //int nb=load_category();
+    //test();
+    int nb=load_category();
     if (argc>=2 && strcmp("-v",argv[1])==0)
         print_list();
-    //printf("%d catégories\n",nb);
+    printf("Nombre de catégories : %d\n",nb);
     free_list(head_cat);
     return 0;
 }

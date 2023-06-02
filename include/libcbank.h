@@ -48,6 +48,22 @@ typedef struct Category
 int save_category(void);
 int load_category(void);
 
+/* Mots clés */
+
+#define KW_CSV "./data/keyword.csv"
+
+#define KW_NAME_LENGTH 51
+
+typedef struct Keyword
+{
+    int id;
+    int category_id;
+    char name[KW_NAME_LENGTH];
+} Keyword;
+
+int save_keyword(void);
+int load_keyword(void);
+
 /* Opération */
 
 #define OPERATION_CSV "./data/operation.csv"
@@ -66,7 +82,7 @@ typedef struct Operation
     char bank_type[OP_LIB_LENGTH];
     char bank_category[OP_LIB_LENGTH];
     char bank_sub_category[OP_LIB_LENGTH];
-    Id category_id;
+    int category_id;
     float amount;
 } Operation;
 

@@ -33,6 +33,21 @@ int save_account(void);
 int load_account(void);
 Account *find_acc_by_id(char *acc_id);
 
+/* Catégorie */
+
+#define CAT_CSV "./data/category.csv"
+
+#define CAT_NAME_LENGTH 51
+
+typedef struct Category
+{
+    int id;
+    char name[CAT_NAME_LENGTH];
+} Category;
+
+int save_category(void);
+int load_category(void);
+
 /* Opération */
 
 #define OPERATION_CSV "./data/operation.csv"

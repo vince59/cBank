@@ -6,6 +6,7 @@
 
 Node * head_acc; // liste des comptes
 Node * head_op; // liste des opérations
+Node * head_cat; // liste des categories
 
 void about(char *msg)
 {

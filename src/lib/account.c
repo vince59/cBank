@@ -47,7 +47,7 @@ int load_account() {
 
     head_acc=NULL;
     while (fgets(line, sizeof(line), file) != NULL) {
-        char id[20], name[50];
+        char id[ACC_ID_LENGTH], name[ACC_NAME_LENGTH];
         float balance;
 
         if (sscanf(line, "%[^;];%[^;];%f", id, name, &balance) == 3) {

@@ -87,6 +87,7 @@ void usage()
     printf(" -csv : affiche les operations en csv\n");
     printf(" -v   : Affiche le détail des opérations\n");
     printf(" -k   : Affiche le détail des opérations avec les mots clé\n");
+    printf(" -nc  : Affiche le détail des opérations non classées\n");
 }
 
 int main(int argc, char *argv[])

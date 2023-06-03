@@ -41,7 +41,7 @@ int main(int argc, char *argv[])
             strcpy(kw, argv[i]);
             list_id = add_keyword(list_id, cat->id, kw);
         }
-        printf("\n%d Mot(s) cle ajouté pour la catégorie %s, id de la nouvelle liste : %d\n", argc - 1, cat->name, list_id);
+        printf("\n%d Mot(s) cle ajouté pour la catégorie %s, id de la nouvelle liste : %d\n", argc - 2, cat->name, list_id);
         save_keyword();
     }
     else

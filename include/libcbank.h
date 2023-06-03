@@ -76,6 +76,7 @@ typedef struct Operation
 int save_operation(void);
 int load_operation(void);
 int print_operations(char info_type);
+void print_operation(Operation *op);
 Id next_operation_id(void);
 int chk_duplicate_operation(Operation *op_curr);
 Node *find_ops_by_cat_id(Node *hop,int cat_id);
@@ -92,6 +93,16 @@ typedef struct Keyword
     int category_id;
     char name[KW_NAME_LENGTH];
 } Keyword;
+
+typedef struct Scoring
+{
+    int id;
+    int category_id;
+    int nb_kw;
+    int nb_match;
+    float score;
+    Node *kw;
+} Scoring;
 
 int save_keyword(void);
 int load_keyword(void);

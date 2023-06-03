@@ -58,12 +58,11 @@ void test3 () {
     load_keyword();
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     about("Liste des mots clé");
 
     int nb=load_keyword();
-    if (argc>=2 && strcmp("-v",argv[1])==0)
         print_list(head_kw);
     printf("Nombre de mots clés : %d\n",nb);
     free_list(head_kw);

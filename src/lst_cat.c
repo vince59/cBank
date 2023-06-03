@@ -10,11 +10,12 @@
 
 #include "libcbank.h"
 
-extern Node * head_cat;
+extern Node *head_cat;
 
 // Générateur de données de test
 
-void gen_fake_category() {
+void gen_fake_category()
+{
 
     add_category("Alimentation");
     add_category("Electricité");
@@ -22,25 +23,27 @@ void gen_fake_category() {
     add_category("Assurance voiture");
 }
 
-void test () {
+void test()
+{
     gen_fake_category();
     save_category();
     load_category();
 }
 
-void test2 () {
+void test2()
+{
     load_category();
     gen_fake_category();
     print_categories();
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     about("Liste des categories");
-    int nb=load_category();
-    if (argc>=2 && strcmp("-v",argv[1])==0)
-        print_categories();
-    printf("Nombre de catégories : %d\n",nb);
+    int nb = load_category();
+
+    print_categories();
+    printf("Nombre de catégories : %d\n", nb);
     free_list(head_cat);
     return 0;
 }

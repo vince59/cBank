@@ -43,7 +43,7 @@ char* decimalPointPos = strchr(sfloat, ',');
 
 // Remplace une sous chaine par une autre
 
-void replaceSubstring(char* str, const char* find, const char* replace) {
+void replace_substring(char* str, const char* find, const char* replace) {
     int findLen = strlen(find);
     int replaceLen = strlen(replace);
 
@@ -53,5 +53,14 @@ void replaceSubstring(char* str, const char* find, const char* replace) {
         memcpy(found, replace, replaceLen);
 
         found = strstr(found + replaceLen, find);
+    }
+}
+
+// Retire le dernier caractère d'une chaine
+
+void remove_last_char(char* str) {
+    int length = strlen(str);
+    if (length > 0) {
+        str[length - 1] = '\0';
     }
 }

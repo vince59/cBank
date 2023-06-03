@@ -49,7 +49,7 @@ int load_bpn_csv(char *acc_id, char *file_name, int *nb_dup)
         int p;                    // Pointage operation
         int z;
         p = 0;
-        replaceSubstring(line, ";;", ";0;");
+        replace_substring(line, ";;", ";0;");
         if ((z = sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%d",
                         d1, lib1, lib2, ref, info, typ, cat, scat, sdeb, scdt, d2, d3, &p)) == 13)
         {

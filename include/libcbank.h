@@ -47,6 +47,8 @@ typedef struct Category
 
 int save_category(void);
 int load_category(void);
+Category *add_category(const char *name);
+void print_categories(void);
 
 /* Opération */
 
@@ -101,6 +103,7 @@ Keyword *find_kw_by_name(Node *hkw, char *kw_name);
 void about(char *msg);
 long cnv_date(char *sdate);
 float cnv_float(char *sfloat);
-void replaceSubstring(char *str, const char *find, const char *replace);
+void replace_substring(char *str, const char *find, const char *replace);
+void remove_last_char(char* str);
 
 #endif

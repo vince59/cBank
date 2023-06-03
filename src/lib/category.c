@@ -111,3 +111,18 @@ void print_categories()
         n = n->next;
     }
 }
+
+Category *find_category_by_id(int cat_id)
+{
+    Category *cat = NULL;
+    Node *n = head_cat;
+
+    while (n != NULL)
+    {
+        cat = n->data;
+        if (cat->id==cat_id)
+            return cat;
+        n = n->next;
+    }
+    return NULL;
+}

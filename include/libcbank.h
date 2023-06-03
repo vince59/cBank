@@ -49,6 +49,7 @@ int save_category(void);
 int load_category(void);
 Category *add_category(const char *name);
 void print_categories(void);
+Category *find_category_by_id(int cat_id);
 
 /* Opération */
 

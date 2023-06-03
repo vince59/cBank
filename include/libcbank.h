@@ -72,7 +72,7 @@ typedef struct Operation
 
 int save_operation(void);
 int load_operation(void);
-void print_operations(void);
+void print_operations(char info_type);
 Id next_operation_id(void);
 int chk_duplicate_operation(Operation *op_curr);
 
@@ -91,7 +91,9 @@ typedef struct Keyword
 
 int save_keyword(void);
 int load_keyword(void);
-Node *extract_kw(Operation *op);
+Node *extract_kw_str(Node *h_kw, const char *p);
+Node *extract_kw_op(Operation *op);
+Keyword *find_kw_by_name(Node *hkw, char *kw_name);
 
 /* Divers */
 

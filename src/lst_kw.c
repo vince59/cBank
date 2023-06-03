@@ -78,16 +78,17 @@ void test () {
 
 void test2 () {
     load_operation();
-    Node *kw = extract_kw((Operation*)head_op->data);
+    Node *kw = extract_kw_op((Operation*)head_op->data);
     print_list(kw);
+    free_list(kw);
 }
 
 int main(int argc, char *argv[])
 {
     about("Liste des mots clé");
     //test();
-    test2();
-    return 0;
+    //test2();
+    //return 0;
     int nb=load_keyword();
     if (argc>=2 && strcmp("-v",argv[1])==0)
         print_list(head_kw);

@@ -131,27 +131,49 @@ Id next_operation_id(void)
     return ++max;
 }
 
-void print_operations()
+// Affiche une opération
+
+void print_operation(Operation *op)
+{
+    printf("Id        : %lu\n", op->id);
+    printf("Compte    : %s\n", op->account_id);
+    printf("Date      : %ld\n", op->date);
+    printf("Libelle 1 : %s\n", op->bank_lib1);
+    printf("Libelle 2 : %s\n", op->bank_lib2);
+    printf("Référence : %s\n", op->bank_ref);
+    printf("Info 1    : %s\n", op->bank_info);
+    printf("Type      : %s\n", op->bank_type);
+    printf("Info 2    : %s\n", op->bank_category);
+    printf("Info 3    : %s\n", op->bank_sub_category);
+    printf("Catégorie : %d\n", op->category_id);
+    printf("Montant   : %.2f\n", op->amount);
+}
+
+// Affiche toutes les operations
+
+void print_operations(char info_type)
 {
     Operation *op = NULL;
     Node *n = head_op;
     while (n != NULL)
     {
         op = n->data;
-
-        printf("%lu;%s;%ld;%s;%s;%s;%s;%s;%s;%s;%d;%.2f;\n",
-               op->id,
-               op->account_id,
-               op->date,
-               op->bank_lib1,
-               op->bank_lib2,
-               op->bank_ref,
-               op->bank_info,
-               op->bank_type,
-               op->bank_category,
-               op->bank_sub_category,
-               op->category_id,
-               op->amount);
+        print_operation(op);
+        if (info_type == 'k') // affichage des mots cle
+        {
+            Node *nkw = extract_kw_op(op);
+            printf("Mots cles : ");
+            Keyword *kw = NULL;
+            while (nkw != NULL)
+            {
+                kw = nkw->data;
+                printf("%s ", kw->name);
+                nkw = nkw->next;
+            }
+            free_list(nkw);
+            printf("\n");
+        }
+        printf("----\n");
         n = n->next;
     }
 }

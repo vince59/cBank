@@ -11,6 +11,8 @@
 
 extern Node *head_kw;
 
+// Enregistre les mots cle sur le fichier
+
 int save_keyword()
 {
     int nb = 0;
@@ -36,6 +38,8 @@ int save_keyword()
     fclose(file);
     return nb;
 }
+
+// Charge les mots clés depuis le fichier
 
 int load_keyword()
 {
@@ -71,15 +75,28 @@ int load_keyword()
     return nb;
 }
 
-// Extrait les mots clé d'une operation
+// Recherche un mot clé dans une liste de mots cle
 
-Node *extract_kw(Operation *op)
+Keyword *find_kw_by_name(Node *hkw, char *kw_name)
 {
-    Node *h_kw = NULL;
-    // bank_lib1;bank_lib2;bank_ref;bank_info
-    const char *p = op->bank_lib1;
-    char str[KW_NAME_LENGTH];
+    Keyword *kw = NULL;
+    Node *n = hkw;
 
+    while (n != NULL)
+    {
+        kw = n->data;
+        if (strcmp(kw->name, kw_name) == 0)
+            return kw;
+        n = n->next;
+    }
+    return NULL;
+}
+
+// Extrait les mots clé d'une chaine
+
+Node *extract_kw_str(Node *h_kw, const char *p)
+{
+    char str[KW_NAME_LENGTH];
     int n = 0;
     for (;;)
     {
@@ -89,8 +106,12 @@ Node *extract_kw(Operation *op)
             {
                 Keyword *kw = (Keyword *)malloc(sizeof(Keyword));
                 str[n++] = '\0';
-                strcpy(kw->name, str);
-                add_node(&h_kw, kw);
+
+                if (find_kw_by_name(h_kw, str) == NULL)
+                {
+                    strcpy(kw->name, str);
+                    add_node(&h_kw, kw);
+                }
                 n = 0;
             }
             if (*p == '\0')
@@ -100,5 +121,18 @@ Node *extract_kw(Operation *op)
             str[n++] = *p;
         p++;
     }
+    return h_kw;
+}
+
+// Extrait les mots clé d'une operation
+
+Node *extract_kw_op(Operation *op)
+{
+    Node *h_kw = NULL;
+
+    h_kw = extract_kw_str(h_kw, op->bank_lib1);
+    h_kw = extract_kw_str(h_kw, op->bank_lib2);
+    h_kw = extract_kw_str(h_kw, op->bank_info);
+    h_kw = extract_kw_str(h_kw, op->bank_ref);
     return h_kw;
 }

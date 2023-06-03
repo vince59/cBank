@@ -72,9 +72,10 @@ typedef struct Operation
 
 int save_operation(void);
 int load_operation(void);
-void print_operations(char info_type);
+int print_operations(char info_type);
 Id next_operation_id(void);
 int chk_duplicate_operation(Operation *op_curr);
+Node *find_ops_by_cat_id(Node *hop,int cat_id);
 
 /* Mots clés */
 

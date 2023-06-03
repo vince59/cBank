@@ -151,14 +151,22 @@ void print_operation(Operation *op)
 
 // Affiche toutes les operations
 
-void print_operations(char info_type)
+int print_operations(char info_type)
 {
+    int nb=0;
     Operation *op = NULL;
-    Node *n = head_op;
+
+    // 'b' : affichage des opérations non classées
+    // 0 : catégorie "Non classée"
+    Node *n = (info_type == 'n') ? find_ops_by_cat_id(head_op, 0) : head_op;
+
+    if (info_type == 'n') // pour les opérations non classée on a besoin des mots cle 
+        info_type = 'k';
     while (n != NULL)
     {
         op = n->data;
         print_operation(op);
+        nb++;
         if (info_type == 'k') // affichage des mots cle
         {
             Node *nkw = extract_kw_op(op);
@@ -176,6 +184,7 @@ void print_operations(char info_type)
         printf("----\n");
         n = n->next;
     }
+    return nb;
 }
 
 // vérifie si l'opération n'esite pas déjà, 1=doublon 0=pas de doublon
@@ -199,3 +208,23 @@ int chk_duplicate_operation(Operation *op_curr)
     return 0;
 }
 
+// Retourne la liste des operations d'une categorie donnée
+// cat_id : id de cartégorie recherché
+// hop : premier élément de liste
+// retour : une nouvelle liste filtrée
+
+Node *find_ops_by_cat_id(Node *hop, int cat_id)
+{
+    Operation *op = NULL;
+    Node *n = hop;
+    Node *ops = NULL;
+
+    while (n != NULL)
+    {
+        op = n->data;
+        if (op->category_id == cat_id)
+            add_node(&ops, op);
+        n = n->next;
+    }
+    return ops;
+}

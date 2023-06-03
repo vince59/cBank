@@ -100,19 +100,34 @@ int main(int argc, char *argv[])
         return 0;
     }
     int nb = load_operation();
-    int i=0;
+    int i = 0;
     if (strcmp("-csv", argv[1]) == 0)
-    {print_csv_operations(); i++;}
-        
+    {
+        print_csv_operations();
+        i++;
+    }
 
     if (strcmp("-v", argv[1]) == 0)
-        {print_operations('v'); i++;}
+    {
+        nb=print_operations('v');
+        i++;
+    }
 
     if (strcmp("-k", argv[1]) == 0)
-        {print_operations('k');  i++;};
+    {
+        nb=print_operations('k');
+        i++;
+    };
+
+    if (strcmp("-nc", argv[1]) == 0)
+    {
+        nb=print_operations('n');
+        i++;
+    };
 
     printf("Nombre d'opérations : %d\n", nb);
-        if (i==0) usage();
+    if (i == 0)
+        usage();
     free_list(head_op);
     return 0;
 }

@@ -97,6 +97,8 @@ int load_keyword(void);
 Node *extract_kw_str(Node *h_kw, const char *p);
 Node *extract_kw_op(Operation *op);
 Keyword *find_kw_by_name(Node *hkw, char *kw_name);
+int next_list_id(void);
+int add_keyword(int list_id, int cat_id, char *str);
 
 /* Divers */
 

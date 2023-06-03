@@ -136,3 +136,34 @@ Node *extract_kw_op(Operation *op)
     h_kw = extract_kw_str(h_kw, op->bank_ref);
     return h_kw;
 }
+
+// Retourne le prochain id de liste
+
+int next_list_id(void)
+{
+    Keyword *kw = NULL;
+    Node *n = head_kw;
+    int max = 0;
+    while (n != NULL)
+    {
+        kw = n->data;
+        if (max < kw->id)
+            max = kw->id;
+        n = n->next;
+    }
+    return ++max;
+}
+
+// Ajoute un mot cle dans une liste
+
+int add_keyword(int list_id, int cat_id, char *str)
+{
+    if (list_id == 0)
+        list_id = next_list_id();
+    Keyword *kw = (Keyword *)malloc(sizeof(Keyword));
+    kw->id = list_id;
+    kw->category_id = cat_id;
+    strcpy(kw->name, str);
+    add_node(&head_kw, kw);
+    return list_id;
+}

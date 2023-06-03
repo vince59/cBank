@@ -86,7 +86,7 @@ void scoring_operation(Node *head_sc, char *kw_name)
 void print_scoring(Node *n)
 {
     Scoring *sc = NULL;
-    int nb=0;
+    int nb = 0;
     while (n != NULL)
     {
         sc = n->data;
@@ -107,7 +107,7 @@ void print_scoring(Node *n)
 
         n = n->next;
     }
-    if (nb==0)
+    if (nb == 0)
         printf("Aucune catégorie n'a été deterrminée automatiquement\n");
 }
 
@@ -150,21 +150,84 @@ void test()
                 n2 = n2->next;
             }
             print_operation(op);
-            printf("---");
             print_scoring(head_sc);
-                        
+            printf("---\n");
             raz_scoring(head_sc);
         }
         n = n->next;
     }
 }
 
+int best_score(Node *n, int *nb)
+{
+    Scoring *sc = NULL;
+    *nb = 0;
+    int category_id = 0;
+    while (n != NULL)
+    {
+        sc = n->data;
+        if (sc->score == 100)
+        {
+            category_id = sc->category_id;
+            (*nb)++;
+        }
+        n = n->next;
+    }
+    return category_id;
+}
+
+int auto_set_category_ops(void)
+{
+    Node *head_sc = struct_kw();
+    Operation *op = NULL;
+    Node *n = head_op;
+    int nb = 0;
+    while (n != NULL) // Parcours des opérations
+    {
+        op = n->data;
+        if (op->category_id == 0) // non classées
+        {
+            Node *kws = extract_kw_op(op);
+            Keyword *kw = NULL;
+            Node *n2 = kws;
+
+            while (n2 != NULL) // Parcours des mots clés
+            {
+                kw = n2->data;
+                scoring_operation(head_sc, kw->name); // Mise à jour du score des listes pour ce mot clé
+                n2 = n2->next;
+            }
+            int nb_db;
+            op->category_id = best_score(head_sc, &nb_db);
+            if (op->category_id > 0)
+            {
+                nb++;
+                print_operation(op);
+                printf("Opération classée automatiquement -> %s\n", find_category_by_id(op->category_id)->name);
+                if (nb_db > 1)
+                    printf("Attention il y a deux catégories corrspondant aux mots clé !!\n");
+                printf("---\n");
+            }
+            raz_scoring(head_sc);
+        }
+        n = n->next;
+    }
+    free_list(head_sc);
+    return nb;
+}
+
 int main()
 {
     about("Classification automatique des opérations\n");
 
-    test();
+    load_keyword();
+    load_operation();
+    load_category();
+    int nb = auto_set_category_ops();
 
+    printf("%d opération(s) classée(s) automatiquement\n", nb);
+    // test();
+    save_operation();
     free_list(head_kw);
     free_list(head_op);
     return 0;

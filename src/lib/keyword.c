@@ -100,7 +100,7 @@ Node *extract_kw_str(Node *h_kw, const char *p)
     int n = 0;
     for (;;)
     {
-        if ((*p == ' ') || ((n + 1) == KW_NAME_LENGTH) || *p == '\0')
+        if ((*p == ' ' || *p == '-') || ((n + 1) == KW_NAME_LENGTH) || *p == '\0')
         {
             if (n > 0)
             {

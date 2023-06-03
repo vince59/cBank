@@ -145,7 +145,10 @@ void print_operation(Operation *op)
     printf("Type      : %s\n", op->bank_type);
     printf("Info 2    : %s\n", op->bank_category);
     printf("Info 3    : %s\n", op->bank_sub_category);
-    printf("Catégorie : %d\n", op->category_id);
+    if (op->category_id > 0)
+        printf("Catégorie : %s\n", find_category_by_id(op->category_id)->name);
+    else
+        printf("Catégorie : Non classée !!\n");
     printf("Montant   : %.2f\n", op->amount);
 }
 
@@ -153,14 +156,14 @@ void print_operation(Operation *op)
 
 int print_operations(char info_type)
 {
-    int nb=0;
+    int nb = 0;
     Operation *op = NULL;
 
     // 'b' : affichage des opérations non classées
     // 0 : catégorie "Non classée"
     Node *n = (info_type == 'n') ? find_ops_by_cat_id(head_op, 0) : head_op;
 
-    if (info_type == 'n') // pour les opérations non classée on a besoin des mots cle 
+    if (info_type == 'n') // pour les opérations non classée on a besoin des mots cle
         info_type = 'k';
     while (n != NULL)
     {

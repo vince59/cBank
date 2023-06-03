@@ -22,7 +22,7 @@ void usage()
 int main(int argc, char *argv[])
 {
     about("Ajout d'une liste de mots clé");
-    if (argc <= 3)
+    if (argc < 3)
     {
         usage();
         return 0;

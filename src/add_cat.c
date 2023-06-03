@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
     int nb=load_category();
     //remove_last_char(argv[1]);
     add_category(argv[1]);
-    printf("Categorie %s ajoutée\n",argv[1]);
+    printf("\nCategorie \"%s\" ajoutée.\n\n",argv[1]);
     save_category();
     print_categories();
     nb=load_category();

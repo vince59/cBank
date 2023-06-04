@@ -30,6 +30,18 @@ long cnv_date(char * sdate)
     return atol(result);
 }
 
+// converti l'entier long 20230112 en 12/01/2023
+
+char *fmt_date(long date) {
+    char *str=malloc(sizeof(char)*11);
+    int day = date % 100;
+    int month = (date / 100) % 100;
+    int year = date / 10000;
+
+    sprintf(str, "%02d/%02d/%04d", day, month, year);
+    return str;
+}
+
 // passe de la chaine "45,15" au flotant 45.15
 
 float cnv_float(char * sfloat) 

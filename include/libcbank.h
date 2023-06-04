@@ -117,6 +117,7 @@ int add_keyword(int list_id, int cat_id, char *str);
 
 void about(char *msg);
 long cnv_date(char *sdate);
+char *fmt_date(long date);
 float cnv_float(char *sfloat);
 void replace_substring(char *str, const char *find, const char *replace);
 void remove_last_char(char* str);

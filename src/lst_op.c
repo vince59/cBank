@@ -11,6 +11,7 @@
 #include "libcbank.h"
 
 extern Node *head_op;
+extern Node *head_cat;
 
 // Générateur de données de test
 
@@ -87,20 +88,47 @@ void usage()
     printf(" -csv : affiche les operations en csv\n");
     printf(" -v   : Affiche le détail des opérations\n");
     printf(" -k   : Affiche le détail des opérations avec les mots clé\n");
-    printf(" -nc  : Affiche le détail des opérations non classées\n");
+    printf(" -nc  : Affiche le détail des opérations sans catégorie\n");
     printf(" -c   : Affiche le détail des opérations par categorie\n");
+}
+
+void print_operation_by_cat(Category *cat) 
+{
+    Node * n=find_ops_by_cat_id(head_op, cat->id);
+    Operation *op = NULL;
+    while (n != NULL)
+    {
+        op = n->data;
+        printf("  Compte    : %s\n", op->account_id);
+        printf("  Date      : %s\n", fmt_date(op->date));
+        printf("  Libelle 1 : %s\n", op->bank_lib1);
+        printf("  Montant   : %.2f\n  ---\n", op->amount);
+        n = n->next;
+    }
+}
+
+void print_operations_by_cat()
+{
+    Category* cat=NULL;
+    Node *n=head_cat;
+    while (n != NULL) {
+        cat=n->data;
+        printf("%d %s\n",cat->id,cat->name);
+        print_operation_by_cat(cat);
+        n = n->next;
+    }
 }
 
 int main(int argc, char *argv[])
 {
     about("Liste des opérations");
-    // test();
     if (argc != 2)
     {
         usage();
         return 0;
     }
     int nb = load_operation();
+    load_category();
     int i = 0;
     if (strcmp("-csv", argv[1]) == 0)
     {
@@ -128,7 +156,7 @@ int main(int argc, char *argv[])
 
     if (strcmp("-c", argv[1]) == 0)
     {
-        nb=print_operations_by_cat();
+        print_operations_by_cat();
         i++;
     };
 

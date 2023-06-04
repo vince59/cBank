@@ -16,13 +16,17 @@ void print_list()
 {
     Account* acc=NULL;
     Node *n=head_acc;
+    float global_balance=0;
     while (n != NULL) {
         acc=n->data;
+        float balance = get_account_balance(acc);
         printf("\n%s - %s\n",acc->id,acc->name);
         printf("  Solde initial : %.2f\n",acc->balance);
-        printf("  Solde final   : %.2f\n",get_account_balance(acc));
+        printf("  Solde final   : %.2f\n",balance);
+        global_balance+=balance;
         n = n->next;
     }
+    printf("\nTotal des liquidités : %.2f\n",global_balance);
 }
 
 // Générateur de données de test
@@ -64,10 +68,9 @@ void test () {
 int main()
 {
     about("Liste des comptes bancaires");
-    int nb=load_account();
+    load_account();
     load_operation();
     print_list();
-    printf("Nombre de comptes : %d\n",nb);
     free_list(head_acc);
     return 0;
 }

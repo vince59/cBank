@@ -32,6 +32,7 @@ typedef struct Account
 int save_account(void);
 int load_account(void);
 Account *find_acc_by_id(char *acc_id);
+float get_account_balance(Account *acc);
 
 /* Catégorie */
 

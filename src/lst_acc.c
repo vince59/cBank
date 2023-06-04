@@ -18,7 +18,9 @@ void print_list()
     Node *n=head_acc;
     while (n != NULL) {
         acc=n->data;
-        printf("%s;%s;%.2f;\n",acc->id,acc->name,acc->balance);
+        printf("\n%s - %s\n",acc->id,acc->name);
+        printf("  Solde initial : %.2f\n",acc->balance);
+        printf("  Solde final   : %.2f\n",get_account_balance(acc));
         n = n->next;
     }
 }
@@ -59,13 +61,12 @@ void test () {
     load_account();
 }
 
-int main(int argc, char *argv[])
+int main()
 {
     about("Liste des comptes bancaires");
-    //test();
     int nb=load_account();
-    if (argc>=2 && strcmp("-v",argv[1])==0)
-        print_list();
+    load_operation();
+    print_list();
     printf("Nombre de comptes : %d\n",nb);
     free_list(head_acc);
     return 0;

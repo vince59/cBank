@@ -88,6 +88,7 @@ void usage()
     printf(" -v   : Affiche le détail des opérations\n");
     printf(" -k   : Affiche le détail des opérations avec les mots clé\n");
     printf(" -nc  : Affiche le détail des opérations non classées\n");
+    printf(" -c   : Affiche le détail des opérations par categorie\n");
 }
 
 int main(int argc, char *argv[])
@@ -122,6 +123,12 @@ int main(int argc, char *argv[])
     if (strcmp("-nc", argv[1]) == 0)
     {
         nb=print_operations('n');
+        i++;
+    };
+
+    if (strcmp("-c", argv[1]) == 0)
+    {
+        nb=print_operations_by_cat();
         i++;
     };
 

@@ -231,10 +231,3 @@ Node *find_ops_by_cat_id(Node *hop, int cat_id)
     }
     return ops;
 }
-
-int classify_operation(Operation *op)
-{
-    Node *kw = extract_kw_op(op);
-
-    return 1;
-}

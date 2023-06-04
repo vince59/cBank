@@ -66,7 +66,7 @@ int load_bpn_csv(char *acc_id, char *file_name, int *nb_dup)
             strcpy(op->bank_category, cat);
             strcpy(op->bank_sub_category, scat);
             op->category_id = 0;
-            op->amount = cnv_float(scdt) - cnv_float(sdeb);
+            op->amount = cnv_float(scdt) + cnv_float(sdeb);
 
             if (!chk_duplicate_operation(op))
             {

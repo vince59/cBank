@@ -4,4 +4,11 @@
 *.log
 load
 *.csv
-bin/*.*
+bin/add_cat
+bin/add_kw
+bin/cla_op
+bin/ld_bpn
+bin/lst_acc
+bin/lst_cat
+bin/lst_kw
+bin/lst_op

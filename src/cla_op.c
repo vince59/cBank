@@ -94,7 +94,7 @@ void print_scoring(Node *n)
         Keyword *kw = NULL;
         if (sc->score > 0)
         {
-            printf("Liste %d score %.2f %%:\n", sc->id, sc->score);
+            printf("Liste %d score %.2f %% %d %d :\n", sc->id, sc->score, sc->nb_kw, sc->nb_match);
             nb++;
             while (n2 != NULL)
             {
@@ -117,17 +117,13 @@ void raz_scoring(Node *n)
     while (n != NULL)
     {
         sc = n->data;
-        if (sc->score > 0)
-        {
-            sc->nb_match = 0;
-            sc->score = 0;
-        }
-
+        sc->nb_match = 0;
+        sc->score = 0;
         n = n->next;
     }
 }
 
-void test()
+/*void test()
 {
     load_keyword();
     load_operation();
@@ -146,6 +142,7 @@ void test()
             while (n2 != NULL) // Parcours des mots clés
             {
                 kw = n2->data;
+                printf("(%lu) %s ",op->id,kw->name);
                 scoring_operation(head_sc, kw->name); // Mise à jour du score des listes pour ce mot clé
                 n2 = n2->next;
             }
@@ -156,7 +153,7 @@ void test()
         }
         n = n->next;
     }
-}
+}*/
 
 int best_score(Node *n, int *nb)
 {

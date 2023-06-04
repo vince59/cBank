@@ -123,38 +123,6 @@ void raz_scoring(Node *n)
     }
 }
 
-/*void test()
-{
-    load_keyword();
-    load_operation();
-    Node *head_sc = struct_kw();
-    Operation *op = NULL;
-    Node *n = head_op;
-    while (n != NULL) // Parcours des opérations
-    {
-        op = n->data;
-        if (op->category_id == 0) // non classées
-        {
-            Node *kws = extract_kw_op(op);
-            Keyword *kw = NULL;
-            Node *n2 = kws;
-
-            while (n2 != NULL) // Parcours des mots clés
-            {
-                kw = n2->data;
-                printf("(%lu) %s ",op->id,kw->name);
-                scoring_operation(head_sc, kw->name); // Mise à jour du score des listes pour ce mot clé
-                n2 = n2->next;
-            }
-            print_operation(op);
-            print_scoring(head_sc);
-            printf("---\n");
-            raz_scoring(head_sc);
-        }
-        n = n->next;
-    }
-}*/
-
 int best_score(Node *n, int *nb)
 {
     Scoring *sc = NULL;
@@ -223,7 +191,6 @@ int main()
     int nb = auto_set_category_ops();
 
     printf("%d opération(s) classée(s) automatiquement\n", nb);
-    // test();
     save_operation();
     free_list(head_kw);
     free_list(head_op);

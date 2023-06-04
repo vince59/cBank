@@ -4,7 +4,4 @@
 *.log
 load
 *.csv
-bin/add_kw
-bin/add_cat
-bin/cla_op
-
+bin/*.*

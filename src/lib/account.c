@@ -97,8 +97,24 @@ float get_account_balance(Account *acc)
     while (n != NULL)
     {
         op = n->data;
-        if (strcmp(op->account_id, acc->id)==0)
+        if (strcmp(op->account_id, acc->id) == 0)
             balance += op->amount;
+        n = n->next;
+    }
+    return balance;
+}
+
+// Calcule la balance générale
+
+float get_balance()
+{
+    Account *acc = NULL;
+    Node *n = head_acc;
+    float balance = 0;
+    while (n != NULL)
+    {
+        acc = n->data;
+        balance += get_account_balance(acc);
         n = n->next;
     }
     return balance;

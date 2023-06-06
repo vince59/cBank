@@ -11,7 +11,7 @@ Node * head_kw; // liste des mots clés
 
 void about(char *msg)
 {
-    printf("Cbank V1.0\n%s\n",msg);
+    printf("Cbank V1.0 --- %s\n",msg);
 }
 
 // passe de la chaine "12/01/2023" à l'entier long 20230112

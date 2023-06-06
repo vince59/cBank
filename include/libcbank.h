@@ -33,6 +33,7 @@ int save_account(void);
 int load_account(void);
 Account *find_acc_by_id(char *acc_id);
 float get_account_balance(Account *acc);
+float get_balance(void);
 
 /* Catégorie */
 
@@ -81,6 +82,7 @@ void print_operation(Operation *op);
 Id next_operation_id(void);
 int chk_duplicate_operation(Operation *op_curr);
 Node *find_ops_by_cat_id(Node *hop,int cat_id);
+Operation * get_last_op(void);
 
 /* Mots clés */
 

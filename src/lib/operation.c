@@ -231,3 +231,24 @@ Node *find_ops_by_cat_id(Node *hop, int cat_id)
     }
     return ops;
 }
+
+
+// retourne la dernière opération
+
+Operation * get_last_op()
+{
+    Operation *op = NULL;
+    Operation *lst_op = NULL;
+    Node *n = head_op;
+    long max = 0;
+    while (n != NULL)
+    {
+        op = n->data;
+        if (max < op->date){
+            max = op->date;
+            lst_op = op;
+            }
+        n = n->next;
+    }
+    return lst_op;
+}

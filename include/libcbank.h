@@ -115,6 +115,19 @@ Keyword *find_kw_by_name(Node *hkw, char *kw_name);
 int next_list_id(void);
 int add_keyword(int list_id, int cat_id, char *str);
 
+/* Stat */
+
+typedef struct Stat
+{
+    long date;
+    int year;
+    int month;
+    int day;
+    float amount;
+} Stat;
+
+Node * get_balance_by_month(void);
+
 /* Divers */
 
 void about(char *msg);
@@ -123,5 +136,8 @@ char *fmt_date(long date);
 float cnv_float(char *sfloat);
 void replace_substring(char *str, const char *find, const char *replace);
 void remove_last_char(char* str);
+void get_ymd(long date, int *year, int *month, int *day);
+char *fmt_int_date(int year, int month, int day);
+long fmt_long_date(int year, int month, int day);
 
 #endif

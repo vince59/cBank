@@ -30,16 +30,40 @@ long cnv_date(char * sdate)
     return atol(result);
 }
 
+// extrait l'année le mois et le jour de la date
+
+void get_ymd(long date, int *year, int *month, int *day)
+{
+    *day = date % 100;
+    *month = (date / 100) % 100;
+    *year = date / 10000;
+}
+
 // converti l'entier long 20230112 en 12/01/2023
 
 char *fmt_date(long date) {
     char *str=malloc(sizeof(char)*11);
-    int day = date % 100;
-    int month = (date / 100) % 100;
-    int year = date / 10000;
-
+    int year, month, day;
+    get_ymd(date, &year, &month, &day);
     sprintf(str, "%02d/%02d/%04d", day, month, year);
     return str;
+}
+
+// converti d m y en 12/01/2023
+
+char *fmt_int_date(int year, int month, int day) {
+    char *str=malloc(sizeof(char)*11);
+    sprintf(str, "%02d/%02d/%04d", day, month, year);
+    return str;
+}
+
+// converti d m y en un entier long 20230112 
+
+long fmt_long_date(int year, int month, int day) {
+    long date;
+
+    date=((year*100)+month)*100+day;
+    return date;
 }
 
 // passe de la chaine "45,15" au flotant 45.15

@@ -10,32 +10,37 @@
 
 #include "libcbank.h"
 
-extern Node * head_acc;
-extern Node * head_op;
+extern Node *head_acc;
+extern Node *head_op;
 
 int main()
 {
     about("Statistiques");
     load_account();
-    int nb=load_operation();
-        float balance = get_initial_balance();
-    
+    int nb = load_operation();
+    float balance = get_initial_balance();
+    float dispo = get_account_balance(find_acc_by_id("CCBPN"));
+    int year, month, day;
+    today(&year, &month, &day);
+    int nb_days = get_days_in_month(month, year);
+
     printf("\n");
-    printf("Nombre d'opérations           : %d\n",nb);
-    printf("Date de la dernière opération : %s\n",fmt_date(get_last_op()->date));
+    printf("Nombre d'opérations           : %d\n", nb);
+    printf("Date de la dernière opération : %s\n", fmt_date(get_last_op()->date));
     printf("Solde départ au 31/12/2022    : %.2f\n", balance);
-    printf("Somme des liquidités          : %.2f\n",get_balance());
+    printf("Somme des liquidités          : %.2f\n", get_balance());
+    printf("Dispo par jour                : %.2f\n", dispo / (nb_days-day));
     printf("\n");
-    Node *head_stat=get_balance_by_month();
+    Node *head_stat = get_balance_by_month();
 
     Stat *stat = NULL;
-    Node *n=head_stat;
+    Node *n = head_stat;
 
     while (n != NULL)
     {
         stat = n->data;
-        balance+=stat->amount;
-        printf("%s : %10.2f %10.2f\n",fmt_int_date(stat->year, stat->month, stat->day),stat->amount,balance);
+        balance += stat->amount;
+        printf("%s : %10.2f %10.2f\n", fmt_int_date(stat->year, stat->month, stat->day), stat->amount, balance);
         n = n->next;
     }
 

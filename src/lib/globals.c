@@ -144,3 +144,23 @@ int is_file_exist(char *filename)
         return 1; // exist
     return 0;     // not exist
 }
+
+// Donne le nombre de jour dans le mois
+
+int get_days_in_month(int month, int year)
+{
+    // Array of days in each month (considering leap years)
+    int daysInMonth[] = {31, 28 + (year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+    // Validate the month argument
+    if (month < 1 || month > 12)
+    {
+        printf("Invalid month!\n");
+        return -1; // Return an error value
+    }
+
+    // Get the number of days in the given month
+    int days = daysInMonth[month - 1];
+
+    return days;
+}

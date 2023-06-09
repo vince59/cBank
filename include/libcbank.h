@@ -147,6 +147,7 @@ char *fmt_int_date(int year, int month, int day);
 long fmt_long_date(int year, int month, int day);
 char *fmt_fr_date(int year, int month, int day);
 void today (int *year, int *month, int *day);
+int get_days_in_month(int month, int year);
 
 // convert
 float cnv_float(char *sfloat);

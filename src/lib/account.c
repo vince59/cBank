@@ -104,6 +104,22 @@ float get_account_balance(Account *acc)
     return balance;
 }
 
+// Fait la somme des soldes initiaux des comptes 
+
+float get_initial_balance()
+{
+    Node *n = head_acc;
+    Account * acc;
+    float balance = 0;
+    while (n != NULL)
+    {
+        acc = n->data;
+        balance += acc->balance;
+        n = n->next;
+    }
+    return balance;
+}
+
 // Calcule la balance générale
 
 float get_balance()

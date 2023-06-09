@@ -34,6 +34,7 @@ int load_account(void);
 Account *find_acc_by_id(char *acc_id);
 float get_account_balance(Account *acc);
 float get_balance(void);
+float get_initial_balance(void);
 
 /* Catégorie */
 
@@ -52,6 +53,7 @@ int load_category(void);
 Category *add_category(const char *name);
 void print_categories(void);
 Category *find_category_by_id(int cat_id);
+int auto_set_category_ops(void);
 
 /* Opération */
 
@@ -114,6 +116,11 @@ Node *extract_kw_op(Operation *op);
 Keyword *find_kw_by_name(Node *hkw, char *kw_name);
 int next_list_id(void);
 int add_keyword(int list_id, int cat_id, char *str);
+Node *struct_kw(void);
+void scoring_operation(Node *head_sc, char *kw_name);
+void raz_scoring(Node *n);
+int best_score(Node *n, int *nb);
+
 
 /* Stat */
 
@@ -131,13 +138,19 @@ Node * get_balance_by_month(void);
 /* Divers */
 
 void about(char *msg);
+int is_file_exist(char *filename);
+// date
 long cnv_date(char *sdate);
 char *fmt_date(long date);
-float cnv_float(char *sfloat);
-void replace_substring(char *str, const char *find, const char *replace);
-void remove_last_char(char* str);
 void get_ymd(long date, int *year, int *month, int *day);
 char *fmt_int_date(int year, int month, int day);
 long fmt_long_date(int year, int month, int day);
+char *fmt_fr_date(int year, int month, int day);
+void today (int *year, int *month, int *day);
+
+// convert
+float cnv_float(char *sfloat);
+void replace_substring(char *str, const char *find, const char *replace);
+void remove_last_char(char* str);
 
 #endif

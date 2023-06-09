@@ -168,3 +168,91 @@ int add_keyword(int list_id, int cat_id, char *str)
     return list_id;
 }
 
+// Structure les mots clé par liste pour être plus facilement analysé
+
+Node *struct_kw(void)
+{
+    Node *head_sc = NULL;
+    Node *n = head_kw;
+    Keyword *kw = NULL;
+    int lst_curr = 0;
+    Scoring *sc;
+    while (n != NULL)
+    {
+        kw = n->data;
+        if (lst_curr != kw->id)
+        {
+            lst_curr = kw->id;
+            sc = (Scoring *)malloc(sizeof(Scoring));
+            sc->id = lst_curr;
+            sc->category_id = kw->category_id;
+            sc->nb_kw = 1;
+            sc->nb_match = 0;
+            sc->kw = NULL;
+            add_node(&head_sc, sc);
+            add_node(&(sc->kw), kw);
+        }
+        else
+        {
+            add_node(&(sc->kw), kw);
+            sc->nb_kw++;
+        }
+        n = n->next;
+    }
+    return head_sc;
+}
+
+// Mise à jour du score des listes pour ce mot clé
+
+void scoring_operation(Node *head_sc, char *kw_name)
+{
+    Node *n = head_sc;
+    Scoring *sc = NULL;
+    while (n != NULL)
+    {
+        sc = n->data;
+        Node *n2 = sc->kw;
+        Keyword *kw = NULL;
+        while (n2 != NULL)
+        {
+            kw = n2->data;
+            if (strcmp(kw->name, kw_name) == 0)
+            {
+                sc->nb_match++;
+            }
+            n2 = n2->next;
+        }
+        sc->score = (sc->nb_match / sc->nb_kw) * 100;
+        n = n->next;
+    }
+}
+
+void raz_scoring(Node *n)
+{
+    Scoring *sc = NULL;
+    while (n != NULL)
+    {
+        sc = n->data;
+        sc->nb_match = 0;
+        sc->score = 0;
+        n = n->next;
+    }
+}
+
+int best_score(Node *n, int *nb)
+{
+    Scoring *sc = NULL;
+    *nb = 0;
+    int category_id = 0;
+    while (n != NULL)
+    {
+        sc = n->data;
+        if (sc->score == 100)
+        {
+            category_id = sc->category_id;
+            (*nb)++;
+        }
+        n = n->next;
+    }
+    return category_id;
+}

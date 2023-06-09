@@ -26,6 +26,20 @@ Stat *find_stat_by_ym(Node *n, int year, int month)
     return NULL;
 }
 
+Stat *find_stat_by_cat_id(Node *n, int cat_id)
+{
+    Stat *stat = NULL;
+    while (n != NULL)
+    {
+        stat = n->data;
+
+        if (stat->cat->id == cat_id)
+            return stat;
+        n = n->next;
+    }
+    return NULL;
+}
+
 Node* sort_stat(Node* head)
 {
     if (head == NULL || head->next == NULL) {

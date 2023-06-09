@@ -152,6 +152,13 @@ void print_operation(Operation *op)
     printf("Montant   : %.2f\n", op->amount);
 }
 
+// Affiche un résumé en ligne de l'opération
+
+void print_operation_light(Operation *op)
+{
+    printf("%s %s %10.f %s\n", op->account_id, fmt_date(op->date), op->amount, op->bank_lib1);
+}
+
 // Affiche toutes les operations
 
 int print_operations(char info_type)
@@ -232,10 +239,9 @@ Node *find_ops_by_cat_id(Node *hop, int cat_id)
     return ops;
 }
 
-
 // retourne la dernière opération
 
-Operation * get_last_op()
+Operation *get_last_op()
 {
     Operation *op = NULL;
     Operation *lst_op = NULL;
@@ -244,11 +250,65 @@ Operation * get_last_op()
     while (n != NULL)
     {
         op = n->data;
-        if (max < op->date){
+        if (max < op->date)
+        {
             max = op->date;
             lst_op = op;
-            }
+        }
         n = n->next;
     }
     return lst_op;
+}
+
+// tri les opérations par date
+
+Node *sort_operation_by_date(Node *head)
+{
+    if (head == NULL || head->next == NULL)
+    {
+        // Empty list or single node, already sorted
+        return head;
+    }
+
+    // Perform a simple bubble sort on the linked list
+    int swapped;
+    Node *ptr1;
+    Node *lptr = NULL;
+
+    do
+    {
+        swapped = 0;
+        ptr1 = head;
+
+        while (ptr1->next != lptr)
+        {
+            Operation *op1 = ptr1->data;
+            Operation *op2 = ptr1->next->data;
+            if (op1->date > op2->date)
+            {
+                // Swap the nodes
+                Node *temp = ptr1->next;
+                ptr1->next = ptr1->next->next;
+                temp->next = ptr1;
+                if (ptr1 == head)
+                {
+                    head = temp;
+                }
+                else
+                {
+                    Node *prev = head;
+                    while (prev->next != ptr1)
+                    {
+                        prev = prev->next;
+                    }
+                    prev->next = temp;
+                }
+                ptr1 = temp;
+                swapped = 1;
+            }
+            ptr1 = ptr1->next;
+        }
+        lptr = ptr1;
+    } while (swapped);
+    return head;
 }

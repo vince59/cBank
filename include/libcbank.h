@@ -81,10 +81,12 @@ int save_operation(void);
 int load_operation(void);
 int print_operations(char info_type);
 void print_operation(Operation *op);
+void print_operation_light(Operation *op);
 Id next_operation_id(void);
 int chk_duplicate_operation(Operation *op_curr);
 Node *find_ops_by_cat_id(Node *hop,int cat_id);
 Operation * get_last_op(void);
+Node *sort_operation_by_date(Node *head);
 
 /* Mots clés */
 
@@ -130,10 +132,15 @@ typedef struct Stat
     int year;
     int month;
     int day;
+    int nb;
     float amount;
+    Category *cat;
+    Node *list;
 } Stat;
 
 Node * get_balance_by_month(void);
+Stat *find_stat_by_ym(Node *n, int year, int month);
+Stat *find_stat_by_cat_id(Node *n, int cat_id);
 
 /* Divers */
 

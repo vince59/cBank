@@ -156,7 +156,7 @@ void print_operation(Operation *op)
 
 void print_operation_light(Operation *op)
 {
-    printf("%s %s %10.f %s\n", op->account_id, fmt_date(op->date), op->amount, op->bank_lib1);
+    printf("%-5s %s %7.0f %s\n", op->account_id, fmt_date(op->date), op->amount, op->bank_lib1);
 }
 
 // Affiche toutes les operations

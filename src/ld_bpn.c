@@ -48,11 +48,11 @@ int load_bpn_csv(char *acc_id, char *file_name, int *nb_dup)
         char scdt[OP_LIB_LENGTH]; // Credit
         char d2[11];              // Date operation
         char d3[11];              // Date de valeur
-        int p;                    // Pointage operation
+        char p;                   // Pointage operation
         int z;
         p = 0;
         replace_substring(line, ";;", ";0;");
-        if ((z = sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%d",
+        if ((z = sscanf(line, "%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%[^;];%c",
                         d1, lib1, lib2, ref, info, typ, cat, scat, sdeb, scdt, d2, d3, &p)) == 13)
         {
             Operation *op = (Operation *)malloc(sizeof(Operation));

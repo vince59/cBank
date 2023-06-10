@@ -131,8 +131,8 @@ int main(int argc, char *argv[])
             char ccbpn[200], liva[200], ldd[200];
 
             sprintf(ccbpn, "/home/vincent/Téléchargements/%s_85391.csv", date);
-            sprintf(liva, "/home/vincent/Téléchargements/%s_85392.csv", date);
-            sprintf(ldd, "/home/vincent/Téléchargements/%s_85393.csv", date);
+            sprintf(ldd, "/home/vincent/Téléchargements/%s_85392.csv", date);
+            sprintf(liva, "/home/vincent/Téléchargements/%s_85394.csv", date);
             if (is_file_exist(ccbpn))
             {
                 printf("Traitement du fichier %s (CCBPN)\n", ccbpn);
@@ -147,6 +147,7 @@ int main(int argc, char *argv[])
             {
                 load("LDD", ldd);
                 printf("Traitement du fichier %s (LDD)\n", ldd);
+                load("LDD", ldd);
             }
 
             int nb = auto_set_category_ops();

@@ -100,13 +100,16 @@ void print_stat(Node *n)
         stat = n->data;
         printf("%s\n", stat->cat->name);
         n2 = stat->list;
+        float amount=0;
         while (n2 != NULL)
         {
             op = n2->data;
             printf("\t");
             print_operation_light(op);
+            amount+=op->amount;
             n2 = n2->next;
         }
+        printf("Total : %.0f\n", amount);
         n = n->next;
     }
 }

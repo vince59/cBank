@@ -41,7 +41,7 @@ void setCursorLocation(int x, int y)
 
 void set_color(int fg_color, int bg_color)
 {
-    printf("\033[%d;%dm", bg_color,fg_color);
+    printf("\033[%d;%dm", bg_color + 10, fg_color);
 }
 
 // Function to hide the cursor
@@ -69,12 +69,46 @@ void restoreScreen()
 
 void button(const char *message, int fg_color, int bg_color, int x, int y)
 {
-    
-    set_color(fg_color, bg_color+10);
-    setCursorLocation(x, y);
-    printf("%s",message);
-} 
 
+    set_color(fg_color, bg_color);
+    setCursorLocation(x, y);
+    printf("%s", message);
+}
+
+void draw_hline(int x, int y, int dx, int fg_color, int bg_color)
+{
+    set_color(fg_color, bg_color);
+    setCursorLocation(x, y);
+    printf("%s", "+");
+    for (int xi = x + 1; xi < x + dx; xi++)
+    {
+        printf("%s", "*");
+    }
+    printf("%s", "+");
+}
+
+void draw_vline(int x, int y, int dy, int fg_color, int bg_color)
+{
+    set_color(fg_color, bg_color);
+    setCursorLocation(x, y);
+    printf("%s", "+");
+    for (int yi = y + 1; yi < y + dy; yi++)
+    {
+        setCursorLocation(x, yi);
+        printf("%s", "*");
+    }
+    setCursorLocation(x, y+dy);
+    printf("%s", "+");
+}
+
+void draw_box(int x, int y, int dx, int dy, int fg_color, int bg_color)
+{
+    draw_hline(x, y, dx, fg_color, bg_color);
+    draw_hline(x, y + dy, dx, fg_color, bg_color);
+    setCursorLocation(x, y + dy);
+    draw_vline(x, y, dy, fg_color, bg_color);
+    draw_vline(x + dx, y, dy, fg_color, bg_color);
+}
 
 int main()
 {
@@ -83,8 +117,8 @@ int main()
     load_category();
     load_account();
     clearScreen();
-    
-    char *buttons[] = {"Quitter","Charger","Categories","Comptes","Stat"};
+
+    char *buttons[] = {"Quitter", "Charger", "Categories", "Comptes", "Stat"};
 
     struct termios old, new;
     int ch;
@@ -94,11 +128,14 @@ int main()
     new = old;
     new.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &new);
+    int pos_x = 1;
+    for (int i = 0; i < 5; i++)
+    {
+        button(buttons[i], YELLOW, BLUE, pos_x, 20);
+        pos_x += strlen(buttons[i]) + 2;
+    }
 
-    button(buttons[0],YELLOW,BLUE,0,20);
-    button(buttons[1],YELLOW,BLUE,10,20);
-    button(buttons[2],YELLOW,BLUE,19,20);
-    
+    draw_box(1, 1, 70, 8, GREEN, BLACK);
     // Read input without echoing
     while (1)
     {

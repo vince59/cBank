@@ -142,6 +142,49 @@ Node * get_balance_by_month(void);
 Stat *find_stat_by_ym(Node *n, int year, int month);
 Stat *find_stat_by_cat_id(Node *n, int cat_id);
 
+/* Ascii */
+
+#define UP_RIGHT_CORNER "+"   // coin supérieur droit
+#define UP_LEFT_CORNER "+"    // coin supérieur gauche
+#define DOWN_RIGHT_CORNER "+" // coin inférieur droit
+#define DOWN_LEFT_CORNER "+"  // coin supérieur droit
+#define LINE "-"              // ligne
+
+#define MAX_X 80
+#define MAX_Y 20
+
+#define BLACK 30
+#define RED 31
+#define GREEN 32
+#define YELLOW 33
+#define BLUE 34
+#define MAGENTA 35
+#define CYAN 36
+#define WHITE 37
+#define LIGHT_GRAY 248
+#define LIGHT_RED 203
+#define LIGHT_GREEN 120
+#define LIGHT_BLUE 117
+
+#define COLOR_RESET "\033[0m"
+
+typedef struct Array
+{
+    Node *Header;
+    Node *list;
+} Array;
+
+void setCursorLocation(int x, int y);
+void set_color(int fg_color, int bg_color);
+void hideCursor();
+void showCursor();
+void clearScreen();
+void restoreScreen();
+void button(const char *message, int fg_color, int bg_color, int x, int y);
+void draw_hline(int x, int y, int dx, int fg_color, int bg_color);
+void draw_vline(int x, int y, int dy, int fg_color, int bg_color);
+void draw_box(int x, int y, int dx, int dy, int fg_color, int bg_color, const char *title);
+
 /* Divers */
 
 void about(char *msg);

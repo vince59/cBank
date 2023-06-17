@@ -23,6 +23,14 @@ int main()
     load_account();
     clearScreen();
 
+        Color color1;
+        color1.bg_color=GREEN;
+        color1.fg_color=BLACK;
+
+        Color color2;
+        color2.bg_color=YELLOW;
+        color2.fg_color=BLUE;
+
     char *buttons[] = {"Quitter", "Charger", "Categories", "Comptes", "Stat"};
 
     struct termios old, new;
@@ -36,11 +44,11 @@ int main()
     int pos_x = 1;
     for (int i = 0; i < 5; i++)
     {
-        button(buttons[i], YELLOW, BLUE, pos_x, 20);
+        button(buttons[i], color1, pos_x, 20);
         pos_x += strlen(buttons[i]) + 2;
     }
 
-    draw_box(1, 1, 70, 8, GREEN, BLACK, "Liste des catégories");
+    draw_box(1, 1, 70, 8, color2, "Liste des catégories");
 
     // Read input without echoing
     while (1)

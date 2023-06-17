@@ -144,11 +144,15 @@ Stat *find_stat_by_cat_id(Node *n, int cat_id);
 
 /* Ascii */
 
-#define UP_RIGHT_CORNER "+"   // coin supérieur droit
+/*#define UP_RIGHT_CORNER "+"   // coin supérieur droit
 #define UP_LEFT_CORNER "+"    // coin supérieur gauche
 #define DOWN_RIGHT_CORNER "+" // coin inférieur droit
 #define DOWN_LEFT_CORNER "+"  // coin supérieur droit
-#define LINE "-"              // ligne
+#define LINE "-"              // ligne */
+
+#define V_SEP "|"
+#define H_SEP "-"
+#define I_SEP "+"
 
 #define MAX_X 80
 #define MAX_Y 20
@@ -161,35 +165,47 @@ Stat *find_stat_by_cat_id(Node *n, int cat_id);
 #define MAGENTA 35
 #define CYAN 36
 #define WHITE 37
-#define LIGHT_GRAY 248
-#define LIGHT_RED 203
-#define LIGHT_GREEN 120
-#define LIGHT_BLUE 117
 
 #define COLOR_RESET "\033[0m"
+
+typedef struct Color
+{
+    int fg_color, bg_color;
+} Color; 
+
+typedef struct Border
+{
+    int border_up, border_down, border_left, border_right;
+    Color color;
+} Border;
 
 typedef struct Cell
 {
     char *content;
     int l,c;
-    int fg_color,bg_color;
+    Color color;
+    int nb_char;
+    Border border;
 } Cell;
 
 typedef struct Array
 {
     Node *cells;
+    Node *header;
+    int nb_line;
+    int nb_col;
 } Array;
 
 void setCursorLocation(int x, int y);
-void set_color(int fg_color, int bg_color);
+void set_color(Color color);
 void hideCursor();
 void showCursor();
 void clearScreen();
 void restoreScreen();
-void button(const char *message, int fg_color, int bg_color, int x, int y);
-void draw_hline(int x, int y, int dx, int fg_color, int bg_color);
-void draw_vline(int x, int y, int dy, int fg_color, int bg_color);
-void draw_box(int x, int y, int dx, int dy, int fg_color, int bg_color, const char *title);
+void button(const char *message, Color color, int x, int y);
+void draw_hline(int x, int y, int dx, Color color);
+void draw_vline(int x, int y, int dy, Color color);
+void draw_box(int x, int y, int dx, int dy, Color color, const char *title);
 
 /* Divers */
 

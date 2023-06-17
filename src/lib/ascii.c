@@ -15,9 +15,9 @@ void setCursorLocation(int x, int y)
     printf("\033[%d;%dH", y, x);
 }
 
-void set_color(int fg_color, int bg_color)
+void set_color(Color color)
 {
-    printf("\033[%d;%dm", bg_color + 10, fg_color);
+    printf("\033[%d;%dm", color.bg_color + 10, color.fg_color);
 }
 
 // Function to hide the cursor
@@ -43,46 +43,46 @@ void restoreScreen()
     printf("\n");
 }
 
-void button(const char *message, int fg_color, int bg_color, int x, int y)
+void button(const char *message, Color color, int x, int y)
 {
 
-    set_color(fg_color, bg_color);
+    set_color(color);
     setCursorLocation(x, y);
     printf("%s", message);
 }
 
-void draw_hline(int x, int y, int dx, int fg_color, int bg_color)
+void draw_hline(int x, int y, int dx, Color color)
 {
-    set_color(fg_color, bg_color);
+    set_color(color);
     setCursorLocation(x, y);
-    printf("%s", "+");
+    printf("%s", I_SEP);
     for (int xi = x + 1; xi < x + dx; xi++)
     {
-        printf("%s", "*");
+        printf("%s", H_SEP);
     }
-    printf("%s", "+");
+    printf("%s", I_SEP);
 }
 
-void draw_vline(int x, int y, int dy, int fg_color, int bg_color)
+void draw_vline(int x, int y, int dy, Color color)
 {
-    set_color(fg_color, bg_color);
+    set_color(color);
     setCursorLocation(x, y);
-    printf("%s", "+");
+    printf("%s", I_SEP);
     for (int yi = y + 1; yi < y + dy; yi++)
     {
         setCursorLocation(x, yi);
-        printf("%s", "*");
+        printf("%s", V_SEP);
     }
     setCursorLocation(x, y + dy);
-    printf("%s", "+");
+    printf("%s", I_SEP);
 }
 
-void draw_box(int x, int y, int dx, int dy, int fg_color, int bg_color, const char *title)
+void draw_box(int x, int y, int dx, int dy, Color color, const char *title)
 {
-    draw_hline(x, y, dx, fg_color, bg_color);
-    draw_hline(x, y + dy, dx, fg_color, bg_color);
-    draw_vline(x, y, dy, fg_color, bg_color);
-    draw_vline(x + dx, y, dy, fg_color, bg_color);
+    draw_hline(x, y, dx, color);
+    draw_hline(x, y + dy, dx, color);
+    draw_vline(x, y, dy, color);
+    draw_vline(x + dx, y, dy, color);
     int l = strlen(title);
     if (l > 0 && l < dx - 2)
     {

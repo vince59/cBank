@@ -168,6 +168,9 @@ Stat *find_stat_by_cat_id(Node *n, int cat_id);
 
 #define COLOR_RESET "\033[0m"
 
+#define LEFT 1
+#define CENTER 2
+
 typedef struct Color
 {
     int fg_color, bg_color;
@@ -186,6 +189,8 @@ typedef struct Cell
     Color color;
     int nb_char;
     Border border;
+    int shift_x, shift_y;
+    int orientation;
 } Cell;
 
 typedef struct Array
@@ -205,7 +210,7 @@ void restoreScreen();
 void button(const char *message, Color color, int x, int y);
 void draw_hline(int x, int y, int dx, Color color);
 void draw_vline(int x, int y, int dy, Color color);
-void draw_box(int x, int y, int dx, int dy, Color color, const char *title);
+void draw_box(int x, int y, int dx, int dy, Border border, const char *title);
 
 /* Divers */
 

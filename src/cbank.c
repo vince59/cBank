@@ -10,7 +10,7 @@ extern Node *head_op;
 extern Node *head_cat;
 extern Node *head_acc;
 
-void add_column(Node* head_col,char * title)
+void add_column(Node *head_col, char *title)
 {
     add_node(&head_col, title);
 }
@@ -23,13 +23,20 @@ int main()
     load_account();
     clearScreen();
 
-        Color color1;
-        color1.bg_color=GREEN;
-        color1.fg_color=BLACK;
+    Color color1;
+    color1.bg_color = GREEN;
+    color1.fg_color = BLACK;
 
-        Color color2;
-        color2.bg_color=YELLOW;
-        color2.fg_color=BLUE;
+    Color color2;
+    color2.bg_color = YELLOW;
+    color2.fg_color = BLUE;
+
+    Border border1;
+    border1.border_down = 1;
+    border1.border_left = 1;
+    border1.border_right = 1;
+    border1.border_up = 1;
+    border1.color = color2;
 
     char *buttons[] = {"Quitter", "Charger", "Categories", "Comptes", "Stat"};
 
@@ -48,7 +55,7 @@ int main()
         pos_x += strlen(buttons[i]) + 2;
     }
 
-    draw_box(1, 1, 70, 8, color2, "Liste des catégories");
+    draw_box(1, 1, 70, 8, border1, "Liste des catégories");
 
     // Read input without echoing
     while (1)

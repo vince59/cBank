@@ -77,12 +77,16 @@ void draw_vline(int x, int y, int dy, Color color)
     printf("%s", I_SEP);
 }
 
-void draw_box(int x, int y, int dx, int dy, Color color, const char *title)
+void draw_box(int x, int y, int dx, int dy, Border border, const char *title)
 {
-    draw_hline(x, y, dx, color);
-    draw_hline(x, y + dy, dx, color);
-    draw_vline(x, y, dy, color);
-    draw_vline(x + dx, y, dy, color);
+    if (border.border_up == 1)
+        draw_hline(x, y, dx, border.color);
+    if (border.border_down == 1)
+        draw_hline(x, y + dy, dx, border.color);
+    if (border.border_left == 1)
+        draw_vline(x, y, dy, border.color);
+    if (border.border_right == 1)
+        draw_vline(x + dx, y, dy, border.color);
     int l = strlen(title);
     if (l > 0 && l < dx - 2)
     {

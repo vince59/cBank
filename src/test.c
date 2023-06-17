@@ -1,6 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <termios.h>
+#include <unistd.h>
 
 #include "libcbank.h"
 
@@ -36,6 +38,7 @@ void set_header(Array *array, int nb_col)
         Cell *cell = (Cell *)malloc(sizeof(Cell));
         cell->l = 1;
         cell->c = c + 1;
+        cell->shift_x = 0;
         array->nb_col++;
         add_node(&array->header, cell);
     }
@@ -49,8 +52,9 @@ void add_row(Array *array)
         Cell *cell = (Cell *)malloc(sizeof(Cell));
         cell->l = array->nb_line;
         cell->c = c + 1;
-        Cell *h=get_cell_at(array->header, 1, cell->c);
-        cell->nb_char=h->nb_char;
+        Cell *h = get_cell_at(array->header, 1, cell->c);
+        cell->nb_char = h->nb_char;
+        cell->shift_x = h->shift_x;
         add_node(&array->cells, cell);
     }
 }
@@ -68,25 +72,29 @@ void set_cell(Array *array, int l, int c, Cell info)
         cell->border = info.border;
         cell->color = info.color;
         cell->content = info.content;
+        cell->nb_char = info.nb_char;
+        cell->orientation=info.orientation;
     }
 }
 
 void print_border(Cell *cell, int x, int y)
 {
     int dx = 2 + cell->nb_char;
-    int dy = 3;
-
-    draw_box(x, y, dx, dy, cell->border.color, "");
+    int dy = 2;
+    draw_box(x, y, dx, dy, cell->border, "");
 }
 
 void print_cell(Cell *cell, int x, int y)
 {
     print_border(cell, x, y);
-    setCursorLocation(x + 1, y + 1);
     set_color(cell->color);
     char *str = malloc(sizeof(char) * cell->nb_char + 1);
     strncpy(str, cell->content, cell->nb_char);
-    str[10] = '\0';
+    str[cell->nb_char] = '\0';
+    if (cell->orientation==CENTER)
+        setCursorLocation(x + (cell->nb_char-strlen(str)) / 2, y+1);
+    else
+        setCursorLocation(x + 1, y + 1);
     printf("%s", str);
     free(str);
 }
@@ -98,35 +106,46 @@ void print_cells(Node *cells, int x, int y)
     while (n != NULL)
     {
         cell = n->data;
-        int x1;
-        int y1;
-        print_cell(cell, x1, y1);
+        print_cell(cell, x + cell->shift_x, y + cell->shift_y);
         n = n->next;
     }
 }
 
-void print_header(Node *header, int x, int y)
+void prepare_header(Array *array)
 {
-    if (header != NULL)
+    Cell *cell = NULL;
+    Node *n = array->header;
+    int shift_x = 0;
+    while (n != NULL)
     {
-        print_cells(header, x, y);
+        cell = n->data;
+        cell->shift_x += (shift_x + 2);
+        shift_x = cell->shift_x;
+        n = n->next;
     }
 }
 
 void print_array(Array *array, int x, int y)
 {
-    print_header(array->header, x, y);
-    print_cells(array->cells, x, y);
+    print_cells(array->header, x, y);
+    // print_cells(array->cells, x, y);
 }
 
 int main()
 {
     clearScreen();
+    struct termios old, new;
+    int ch;
 
+    // Disable terminal echo
+    tcgetattr(STDIN_FILENO, &old);
+    new = old;
+    new.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &new);
     Array *array = new_array(15, 3);
     int col_nb_char = 20;
-    int nb_col = 4;
-    int nb_line = 8;
+    int nb_col = 1;
+    int nb_line = 1;
 
     Color color1;
     color1.bg_color = GREEN;
@@ -162,32 +181,49 @@ int main()
         cell.content = (char *)malloc(sizeof(char) * col_nb_char);
         cell.color = color1;
         cell.border = border1;
+        cell.orientation=CENTER;
         sprintf(cell.content, "HEADER %d", c + 1);
-        if (cell.c == 1)
-            cell.nb_char = 3;
+        if (c == 1)
+            cell.nb_char = 20;
         else
             cell.nb_char = col_nb_char;
         set_cell(array, 0, c + 1, cell);
     }
 
+    prepare_header(array);
     // Lignes
 
     for (int l = 0; l < nb_line; l++)
     {
-        void add_row(array);
+        add_row(array);
         for (int c = 0; c < nb_col; c++)
         {
-
             Cell cell;
             cell.content = (char *)malloc(sizeof(char) * col_nb_char);
             cell.color = color2;
             cell.border = border2;
+            cell.orientation=LEFT;
             sprintf(cell.content, "CELL %d %d", l + 1, c + 1);
             set_cell(array, l + 1, c + 1, cell);
         }
     }
 
+    for (int i = 0; i < 20; i++)
+        printf("123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ\n");
     print_array(array, 2, 3);
+
+    // Read input without echoing
+    while (1)
+    {
+        ch = getchar();
+
+        // Check for function keys
+        if (ch == 'q')
+            break;
+    }
+
+    // Restore terminal settings
+    tcsetattr(STDIN_FILENO, TCSANOW, &old);
     restoreScreen();
     return 0;
 }

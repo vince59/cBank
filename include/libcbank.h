@@ -208,9 +208,19 @@ void showCursor();
 void clearScreen();
 void restoreScreen();
 void button(const char *message, Color color, int x, int y);
-void draw_hline(int x, int y, int dx, Color color);
-void draw_vline(int x, int y, int dy, Color color);
+void draw_hline(int x, int y, int dx, Border border);
+void draw_vline(int x, int y, int dy, Border border);
 void draw_box(int x, int y, int dx, int dy, Border border, const char *title);
+Cell *get_cell_at(Node *n, int l, int c);
+Array *new_array();
+void set_header(Array *array, int nb_col);
+void add_row(Array *array);
+void set_cell(Array *array, int l, int c, Cell info);
+void print_border(Cell *cell, int x, int y);
+void print_cell(Cell *cell, int x, int y);
+void print_cells(Node *cells, int x, int y);
+void prepare_header(Array *array);
+void print_array(Array *array, int x, int y);
 
 /* Divers */
 

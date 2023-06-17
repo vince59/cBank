@@ -1,6 +1,6 @@
-# Compiler options eee
+# Compiler options
 CC := gcc
-CFLAGS := -Wall -Wextra -g -W -pedantic 
+CFLAGS := -Wall -Wextra -g -W -pedantic
 
 # Directories
 SRCDIR := src
@@ -27,6 +27,9 @@ LIBRARY := $(LIBDIR)/$(LIBNAM)
 # Include directories
 INCLUDES := -I$(INCDIR)
 
+# Libraries
+LIBS := -lncurses
+
 # Default rule
 all: $(EXECUTABLES)
 
@@ -34,7 +37,7 @@ all: $(EXECUTABLES)
 $(BINDIR)/%: $(OBJDIR)/%.o $(LIBRARY)
 	@mkdir -p $(BINDIR)
 	@echo "Linking $@..."
-	$(CC) $(CFLAGS) -o $@ $< $(LIBRARY)
+	$(CC) $(CFLAGS) -o $@ $< $(LIBRARY) $(LIBS)
 
 # Rule to compile object files
 $(OBJDIR)/%.o: $(SRCDIR)/%.c

@@ -168,10 +168,16 @@ Stat *find_stat_by_cat_id(Node *n, int cat_id);
 
 #define COLOR_RESET "\033[0m"
 
+typedef struct Cell
+{
+    char *content;
+    int l,c;
+    int fg_color,bg_color;
+} Cell;
+
 typedef struct Array
 {
-    Node *Header;
-    Node *list;
+    Node *cells;
 } Array;
 
 void setCursorLocation(int x, int y);

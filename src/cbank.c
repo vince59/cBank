@@ -10,6 +10,11 @@ extern Node *head_op;
 extern Node *head_cat;
 extern Node *head_acc;
 
+void add_column(Node* head_col,char * title)
+{
+    add_node(&head_col, title);
+}
+
 int main()
 {
     load_keyword();

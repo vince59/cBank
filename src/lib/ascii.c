@@ -213,12 +213,22 @@ void print_cell(Cell *cell, int x, int y)
     char *str = malloc(sizeof(char) * cell->nb_char + 1);
     strncpy(str, cell->content, cell->nb_char);
     str[cell->nb_char] = '\0';
-    if (cell->orientation == CENTER)
-        setCursorLocation(x + 1 + (cell->nb_char - strlen(str)) / 2, cell->border.border_up == 1 ? y + 1 : y);
-    else
-        setCursorLocation(x + 1, cell->border.border_up == 1 ? y + 1 : y);
+    switch (cell->orientation)
+    {
+        case CENTER :
+            setCursorLocation(x + 1 + (cell->nb_char - strlen(str)) / 2, cell->border.border_up == 1 ? y + 1 : y);
+            break;
+        case RIGHT :
+            setCursorLocation(x + 1 + (cell->nb_char - strlen(str)), cell->border.border_up == 1 ? y + 1 : y);
+            break;
+        case LEFT :
+            setCursorLocation(x + 1, cell->border.border_up == 1 ? y + 1 : y);
+            break;
+        default :
+            setCursorLocation(x + 1, cell->border.border_up == 1 ? y + 1 : y);
+            break;
+    }        
     printf("%s", str);
-
     free(str);
 }
 
@@ -263,5 +273,16 @@ int wait_until(const char *s)
         ch = getchar();
         if (find_char(s, ch)>-1)
             return ch;
+    }
+}
+
+void free_cells(Node *n)
+{
+    Cell *cell = NULL;
+    while (n != NULL)
+    {
+        cell = n->data;
+        free(cell->content);
+        n = n->next;
     }
 }

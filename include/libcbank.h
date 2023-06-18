@@ -163,8 +163,11 @@ Stat *find_stat_by_cat_id(Node *n, int cat_id);
 
 #define COLOR_RESET "\033[0m"
 
+//Orientation
+
 #define LEFT 1
 #define CENTER 2
+#define RIGHT 3
 
 typedef struct Color
 {
@@ -219,6 +222,7 @@ void print_array(Array *array, int x, int y);
 void init_ascii();
 void close_ascii();
 int wait_until(const char *s);
+void free_cells(Node *n);
 
 /* Divers */
 
@@ -246,4 +250,10 @@ void close_db();
 void draw_main_button();
 void draw_array_button();
 void draw_welcome(const char *msg);
+Array *array_categories(long int start, int max_line);
+void free_array(Array *array);
+void init_dsp_array(const char *title);
+void dsp_cat();
+void init_dsp_main();
+void dsp_acc();
 #endif

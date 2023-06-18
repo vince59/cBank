@@ -32,7 +32,7 @@ void close_db()
     free_list(head_acc);
 }
 
-void draw_button()
+void draw_main_button()
 {
     Color color = {GREEN, BLACK};
     char *buttons[] = {"Catégories","Quitter"};
@@ -44,8 +44,20 @@ void draw_button()
     }
 }
 
-void draw_welcome()
+void draw_array_button()
+{
+    Color color = {GREEN, BLACK};
+    char *buttons[] = {"Suivant","Précédent","Début","Fin","Quitter"};
+    int pos_x = 1;
+    for (int i = 0; i < 5; i++)
+    {
+        button(buttons[i], color, pos_x, 20);
+        pos_x += strlen(buttons[i]) + 2;
+    }
+}
+
+void draw_welcome(const char *msg)
 {
     Border border = {1,1,1,1,{YELLOW, BLACK}};
-    draw_box(1, 1, 79, 18, border, "   C_BANK V1.2   ");
+    draw_box(1, 1, 79, 18, border, msg);
 }

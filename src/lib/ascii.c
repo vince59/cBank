@@ -244,6 +244,7 @@ void prepare_header(Array *array)
         cell = n->data;
         cell->shift_x += shift_x;
         shift_x += cell->nb_char + 2;
+        cell->shift_y=0;
         n = n->next;
     }
 }

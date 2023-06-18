@@ -17,7 +17,7 @@ int main()
     new = old;
     new.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(STDIN_FILENO, TCSANOW, &new);
-    Array *array = new_array(15, 3);
+    Array *array = new_array();
     int col_nb_char = 20;
     int nb_col = 5;
     int nb_line = 2;

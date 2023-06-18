@@ -14,6 +14,7 @@ typedef struct Node
 
 void add_node(Node **head, void *data);
 void free_list(Node *head);
+long int nb_node(Node* head);
 
 /* Comptes */
 
@@ -242,6 +243,7 @@ int find_char(const char *str, int target);
 // Cbank
 void load_db();
 void close_db();
-void draw_button();
-void draw_welcome();
+void draw_main_button();
+void draw_array_button();
+void draw_welcome(const char *msg);
 #endif

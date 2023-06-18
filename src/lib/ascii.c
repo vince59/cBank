@@ -11,6 +11,25 @@
 
 #include "libcbank.h"
 
+struct termios old, new;
+
+void init_ascii()
+{
+    tcgetattr(STDIN_FILENO, &old);
+    new = old;
+    new.c_lflag &= ~(ICANON | ECHO);
+    tcsetattr(STDIN_FILENO, TCSANOW, &new);
+    clearScreen();
+    hideCursor();
+}
+
+void close_ascii()
+{
+    clearScreen();
+    restoreScreen();
+    tcsetattr(STDIN_FILENO, TCSANOW, &old);
+}
+
 void setCursorLocation(int x, int y)
 {
     printf("\033[%d;%dH", y, x);
@@ -35,6 +54,7 @@ void showCursor()
 
 void clearScreen()
 {
+    printf("\033[%d;%dm", BLACK + 10, WHITE);
     printf("\033[2J\033[H"); // ANSI escape sequence to clear the screen and move the cursor to the top-left corner
 }
 
@@ -125,7 +145,6 @@ Array *new_array()
     return array;
 }
 
-
 void set_header(Array *array, int nb_col)
 {
     if (array->header != NULL)
@@ -154,7 +173,7 @@ void add_row(Array *array)
         Cell *h = get_cell_at(array->header, 1, cell->c);
         cell->nb_char = h->nb_char;
         cell->shift_x = h->shift_x;
-        cell->shift_y=array->nb_line-1;
+        cell->shift_y = array->nb_line - 1;
         add_node(&array->cells, cell);
     }
 }
@@ -199,7 +218,7 @@ void print_cell(Cell *cell, int x, int y)
     else
         setCursorLocation(x + 1, cell->border.border_up == 1 ? y + 1 : y);
     printf("%s", str);
-    
+
     free(str);
 }
 
@@ -233,4 +252,15 @@ void print_array(Array *array, int x, int y)
 {
     print_cells(array->header, x, y);
     print_cells(array->cells, x, y + 3);
+}
+
+int wait_until(const char *s)
+{
+    int ch;
+    while (1)
+    {
+        ch = getchar();
+        if (find_char(s, ch)>-1)
+            return ch;
+    }
 }

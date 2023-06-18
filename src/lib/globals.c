@@ -165,3 +165,22 @@ int get_days_in_month(int month, int year)
     return days;
 }
 
+// Vérifie si un caractère se trouve dans la chaine
+
+int find_char(const char *str, int target)
+{
+    if (str == NULL)
+        return -1;
+
+    const char *ptr = str;
+    int index = 0;
+
+    while (*ptr != '\0')
+    {
+        if (*ptr == target)
+            return index;
+        ptr++;
+        index++;
+    }
+    return -1; // Character not found
+}

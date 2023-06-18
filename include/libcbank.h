@@ -144,12 +144,6 @@ Stat *find_stat_by_cat_id(Node *n, int cat_id);
 
 /* Ascii */
 
-/*#define UP_RIGHT_CORNER "+"   // coin supérieur droit
-#define UP_LEFT_CORNER "+"    // coin supérieur gauche
-#define DOWN_RIGHT_CORNER "+" // coin inférieur droit
-#define DOWN_LEFT_CORNER "+"  // coin supérieur droit
-#define LINE "-"              // ligne */
-
 #define V_SEP "|"
 #define H_SEP "-"
 #define I_SEP "+"
@@ -157,7 +151,7 @@ Stat *find_stat_by_cat_id(Node *n, int cat_id);
 #define MAX_X 80
 #define MAX_Y 20
 
-#define BLACK 30
+#define BLACK 49
 #define RED 31
 #define GREEN 32
 #define YELLOW 33
@@ -221,6 +215,9 @@ void print_cell(Cell *cell, int x, int y);
 void print_cells(Node *cells, int x, int y);
 void prepare_header(Array *array);
 void print_array(Array *array, int x, int y);
+void init_ascii();
+void close_ascii();
+int wait_until(const char *s);
 
 /* Divers */
 
@@ -236,9 +233,15 @@ char *fmt_fr_date(int year, int month, int day);
 void today (int *year, int *month, int *day);
 int get_days_in_month(int month, int year);
 
-// convert
+// string
 float cnv_float(char *sfloat);
 void replace_substring(char *str, const char *find, const char *replace);
 void remove_last_char(char* str);
+int find_char(const char *str, int target);
 
+// Cbank
+void load_db();
+void close_db();
+void draw_button();
+void draw_welcome();
 #endif

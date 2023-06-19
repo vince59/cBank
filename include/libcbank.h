@@ -248,6 +248,7 @@ int find_char(const char *str, int target);
 void load_db();
 void close_db();
 void draw_main_button();
+void draw_main_menu();
 void draw_array_button();
 void draw_welcome(const char *msg);
 Array *array_categories(long int start, int max_line);
@@ -256,4 +257,5 @@ void init_dsp_array(const char *title);
 void dsp_cat();
 void init_dsp_main();
 void dsp_acc();
+void dsp_stat();
 #endif

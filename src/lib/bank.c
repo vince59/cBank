@@ -32,12 +32,22 @@ void close_db()
     free_list(head_acc);
 }
 
+void draw_main_menu()
+{
+    Color color = {GREEN, BLACK};
+    char *menu[] = {"1 - Statistiques","2 - Soldes","3 - Catégories"};
+    for (int i = 0; i < 3; i++)
+    {
+        button(menu[i], color, 3, i+3);
+    }
+}
+
 void draw_main_button()
 {
     Color color = {GREEN, BLACK};
-    char *buttons[] = {"Soldes", "Catégories", "Quitter"};
+    char *buttons[] = {"Quitter"};
     int pos_x = 1;
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 1; i++)
     {
         button(buttons[i], color, pos_x, 20);
         pos_x += strlen(buttons[i]) + 2;
@@ -296,6 +306,12 @@ void dsp_cat()
     dsp_array(array_categories, " Liste des catégories ", nb_cat, 14, 2, 2);
 }
 
+void dsp_stat()
+{
+    long nb_cat = nb_node(head_cat);
+    //dsp_array(array_stat, " Statistiques ", nb_cat, 14, 2, 2);
+}
+
 void dsp_acc()
 {
     long nb_acc = nb_node(head_acc);
@@ -307,4 +323,5 @@ void init_dsp_main()
     clearScreen();
     draw_welcome("   C_BANK 1.1   ");
     draw_main_button();
+    draw_main_menu();
 }

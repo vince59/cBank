@@ -66,7 +66,6 @@ void restoreScreen()
 
 void button(const char *message, Color color, int x, int y)
 {
-
     set_color(color);
     setCursorLocation(x, y);
     printf("%s", message);

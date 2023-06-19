@@ -18,15 +18,18 @@ int main()
     for (;;)
     {
         init_dsp_main();
-        int ch = wait_until("csq");
+        int ch = wait_until("123q");
         printf("%c",ch);
         switch (ch)
         {
-            case 'c' :
+            case '3' :
                 dsp_cat();
                 break;
-            case 's' :
+            case '2' :
                 dsp_acc();
+                break;
+            case '1' :
+                dsp_stat();
                 break;
         }
         if (ch == 'q')

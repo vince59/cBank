@@ -187,7 +187,7 @@ typedef struct Cell
     Color color;
     int nb_char;
     Border border;
-    int shift_x, shift_y;
+    int shift_x;
     int orientation;
 } Cell;
 
@@ -195,8 +195,11 @@ typedef struct Array
 {
     Node *cells;
     Node *header;
-    int nb_line;
+    long nb_line;
     int nb_col;
+    int line_page;
+    int x,y;
+    char *title;
 } Array;
 
 void setCursorLocation(int x, int y);
@@ -218,7 +221,7 @@ void print_border(Cell *cell, int x, int y);
 void print_cell(Cell *cell, int x, int y);
 void print_cells(Node *cells, int x, int y);
 void prepare_header(Array *array);
-void print_array(Array *array, int x, int y);
+void print_array(Array *array, long page);
 void init_ascii();
 void close_ascii();
 int wait_until(const char *s);
@@ -254,9 +257,13 @@ void draw_array_button();
 void draw_welcome(const char *msg);
 Array *array_categories(long int start, int max_line);
 void free_array(Array *array);
-void init_dsp_array(const char *title);
 void dsp_cat();
 void init_dsp_main();
 void dsp_acc();
 void dsp_stat();
+void free_array(Array *array);
+void init_dsp_array(Array *array);
+void dsp_cat(void);
+void dsp_array(Array *array);
+
 #endif

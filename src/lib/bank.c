@@ -17,106 +17,36 @@ extern Node *head_cat;
 extern Node *head_acc;
 
 
-void free_array(Array *array);
-void init_dsp_array(const char *title);
-void dsp_array(Array *(*func_array)(long int, int), const char *title, long total, int nb, int x, int y);
-Array *array_categories(long int start, int max_line);
-Array *array_account(long int start, int max_line);
-Array *array_stat(long int start, int max_line);
-
-
 /****************************
- * 
+ *
  *  TABLEAU DES STATISTIQUES
- * 
-*/
+ *
+ */
 
 void dsp_stat()
 {
-    long nb_cat = nb_node(head_cat);
-    //dsp_array(array_stat, " Statistiques ", nb_cat, 14, 2, 2);
 }
 
-Array *array_stat(long int start, int max_line)
-{
-    Array *array = new_array();
-    int nb_col = 2;
-    Color header_color = {GREEN, BLACK};
-    Color line_color = {WHITE, BLACK};
-    Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
-    Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
-
-    set_header(array, nb_col);
-
-    for (int c = 0; c < nb_col; c++)
-    {
-        int col_nb_char = (c == 0 ? 4 : 20);
-
-        Cell cell;
-        cell.content = (char *)malloc(sizeof(char) * col_nb_char);
-        cell.color = header_color;
-        cell.border = header_border;
-        cell.orientation = CENTER;
-        sprintf(cell.content, c == 0 ? "ID" : "Libellé");
-        cell.nb_char = col_nb_char;
-        set_cell(array, 0, c + 1, cell);
-    }
-
-    prepare_header(array);
-
-    Category *cat = NULL;
-    Node *n = head_cat;
-    int l = 0;
-    long int i = 0;
-    while (n != NULL)
-    {
-        cat = n->data;
-        if (i >= start - 1)
-        {
-            add_row(array);
-            for (int c = 0; c < nb_col; c++)
-            {
-                Cell cell;
-                cell.content = (char *)malloc(sizeof(char) * (c == 0 ? 5 : strlen(cat->name)));
-                cell.color = line_color;
-                cell.border = line_border;
-                cell.orientation = LEFT;
-                if (c == 0)
-                    sprintf(cell.content, "%d", cat->id);
-                else
-                    sprintf(cell.content, "%s", cat->name);
-                set_cell(array, l + 1, c + 1, cell);
-            }
-            l++;
-        }
-        i++;
-        if (l == max_line)
-            break;
-        n = n->next;
-    }
-    return array;
-}
 
 /****************************
- * 
+ *
  *  TABLEAU DES CATEGORIES
- * 
-*/
+ *
+ */
 
 void dsp_cat()
 {
-    long nb_cat = nb_node(head_cat);
-    dsp_array(array_categories, " Liste des catégories ", nb_cat, 14, 2, 2);
-}
-
-Array *array_categories(long int start, int max_line)
-{
     Array *array = new_array();
     int nb_col = 2;
     Color header_color = {GREEN, BLACK};
     Color line_color = {WHITE, BLACK};
     Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
     Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
+    array->line_page = 14;
+    array->x = 2;
+    array->y = 2;
+    array->title=malloc(sizeof(char)*50);
+    strcpy(array->title, " Liste des catégories ");
 
     set_header(array, nb_col);
 
@@ -139,49 +69,36 @@ Array *array_categories(long int start, int max_line)
     Category *cat = NULL;
     Node *n = head_cat;
     int l = 0;
-    long int i = 0;
     while (n != NULL)
     {
         cat = n->data;
-        if (i >= start - 1)
+        add_row(array);
+        for (int c = 0; c < nb_col; c++)
         {
-            add_row(array);
-            for (int c = 0; c < nb_col; c++)
-            {
-                Cell cell;
-                cell.content = (char *)malloc(sizeof(char) * (c == 0 ? 5 : strlen(cat->name)));
-                cell.color = line_color;
-                cell.border = line_border;
-                cell.orientation = LEFT;
-                if (c == 0)
-                    sprintf(cell.content, "%d", cat->id);
-                else
-                    sprintf(cell.content, "%s", cat->name);
-                set_cell(array, l + 1, c + 1, cell);
-            }
-            l++;
+            Cell cell;
+            cell.content = (char *)malloc(sizeof(char) * (c == 0 ? 5 : strlen(cat->name)));
+            cell.color = line_color;
+            cell.border = line_border;
+            cell.orientation = LEFT;
+            if (c == 0)
+                sprintf(cell.content, "%d", cat->id);
+            else
+                sprintf(cell.content, "%s", cat->name);
+            set_cell(array, l + 1, c + 1, cell);
         }
-        i++;
-        if (l == max_line)
-            break;
+        l++;
         n = n->next;
     }
-    return array;
+    dsp_array(array);
 }
 
 /****************************
- * 
+ *
  *  TABLEAU DES COMPTES
- * 
-*/
+ *
+ */
 
 void dsp_acc()
-{
-    long nb_acc = nb_node(head_acc);
-    dsp_array(array_account, " Solde des comptes ", nb_acc, 14, 2, 2);
-}
-
-Array *array_account(long int start, int max_line)
 {
     Array *array = new_array();
     int nb_col = 3;
@@ -189,6 +106,11 @@ Array *array_account(long int start, int max_line)
     Color line_color = {WHITE, BLACK};
     Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
     Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
+    array->line_page = 10;
+    array->x = 2;
+    array->y = 2;
+    array->title=malloc(sizeof(char)*50);
+    strcpy(array->title, " Liste des comptes ");
 
     set_header(array, nb_col);
 
@@ -288,20 +210,21 @@ Array *array_account(long int start, int max_line)
         case 2:
             col_nb_char = 10;
             cell.content = (char *)malloc(sizeof(char) * col_nb_char);
-            cell.color.fg_color=RED;
+            cell.color.fg_color = RED;
             sprintf(cell.content, "%.2f", global_balance);
             break;
         }
         set_cell(array, l + 1, c + 1, cell);
     }
-    return array;
+    dsp_array(array);
 }
 
+
 /****************************
- * 
+ *
  *  FONCTION GENERIQUES GESTION TABLEAU
- * 
-*/
+ *
+ */
 
 void free_array(Array *array)
 {
@@ -312,47 +235,18 @@ void free_array(Array *array)
     free(array);
 }
 
-void init_dsp_array(const char *title)
+void init_dsp_array(Array *array)
 {
     clearScreen();
-    draw_welcome(title);
+    draw_welcome(array->title);
     draw_array_button();
 }
 
-void dsp_array(Array *(*func_array)(long int, int), const char *title, long total, int nb, int x, int y)
+void init_dsp_array2(Array *array)
 {
-    init_dsp_array(title);
-    long start = 1;
-    Array *array = func_array(start, nb);
-    print_array(array, x, y);
-    for (;;)
-    {
-        int ch = wait_until("p+-dq");
-        switch (ch)
-        {
-        case '+':
-            if (array->nb_line >= nb)
-                start += nb;
-            break;
-        case '-':
-            start -= nb;
-            if (start < 0)
-                start = 1;
-            break;
-        case 'p':
-            start = 1;
-            break;
-        case 'd':
-            start = total - nb + 1;
-            break;
-        }
-        free_array(array);
-        if (ch == 'q')
-            break;
-        init_dsp_array(title);
-        array = func_array(start, nb);
-        print_array(array, x, y);
-    }
+    clearScreen();
+    draw_welcome(array->title);
+    draw_array_button();
 }
 
 void draw_array_button()
@@ -367,11 +261,43 @@ void draw_array_button()
     }
 }
 
+void dsp_array(Array *array)
+{
+    long page=1;
+    
+    print_array(array,page);
+    for (;;)
+    {
+        int ch = wait_until("p+-dq");
+        switch (ch)
+        {
+        case '+':
+            if (array->nb_line >= (page*array->line_page))
+                page++;
+            break;
+        case '-':
+            if (page-1>0)
+                page--;
+            break;
+        case 'p':
+            page=1;
+            break;
+        case 'd':
+            page=array->nb_line%array->line_page;
+            break;
+        }
+        if (ch == 'q')
+            break;
+        print_array(array,page);
+    }
+    free_array(array);
+}
+
 /****************************
- * 
+ *
  *  FONCTION GENERIQUES BDD et AFFICHAGE
- * 
-*/
+ *
+ */
 
 void init_dsp_main()
 {
@@ -400,10 +326,10 @@ void close_db()
 void draw_main_menu()
 {
     Color color = {GREEN, BLACK};
-    char *menu[] = {"1 - Statistiques","2 - Soldes","3 - Catégories"};
+    char *menu[] = {"1 - Statistiques", "2 - Soldes", "3 - Catégories"};
     for (int i = 0; i < 3; i++)
     {
-        button(menu[i], color, 3, i+3);
+        button(menu[i], color, 3, i + 3);
     }
 }
 
@@ -419,10 +345,50 @@ void draw_main_button()
     }
 }
 
-
 void draw_welcome(const char *msg)
 {
     Border border = {1, 1, 1, 1, {YELLOW, BLACK}};
     draw_box(1, 1, 79, 18, border, msg);
+}
+
+void print_header(Array *array)
+{
+    Cell *cell = NULL;
+    Node *n = array->header;
+    while (n != NULL)
+    {
+        cell = n->data;
+        print_cell(cell, array->x + cell->shift_x, array->y);
+        n = n->next;
+    }
+}
+
+void print_line(Array *array, long page)
+{
+    Cell *cell = NULL;
+    Node *n = array->cells;
+    int i=-1;
+    long last_l=0;
+    while (n != NULL)
+    {
+        cell = n->data;
+        if (cell->l>(page-1)*array->line_page && cell->l<=page*array->line_page)
+        {
+            if (cell->l!=last_l)
+            {
+                i++;
+                last_l=cell->l;
+            }
+            print_cell(cell, array->x + cell->shift_x, array->y +3 + i);
+        }
+        n = n->next;
+    }
+}
+
+void print_array(Array *array, long page)
+{
+    init_dsp_array(array);
+    print_header(array);
+    print_line(array, page);
 }
 

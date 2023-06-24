@@ -179,7 +179,6 @@ void add_row(Array *array)
         Cell *h = get_cell_at(array->header, 1, cell->c);
         cell->nb_char = h->nb_char;
         cell->shift_x = h->shift_x;
-        cell->shift_y = array->nb_line - 1;
         add_node(&array->cells, cell);
     }
 }
@@ -238,17 +237,6 @@ void print_cell(Cell *cell, int x, int y)
     free(str);
 }
 
-void print_cells(Node *cells, int x, int y)
-{
-    Cell *cell = NULL;
-    Node *n = cells;
-    while (n != NULL)
-    {
-        cell = n->data;
-        print_cell(cell, x + cell->shift_x, y + cell->shift_y);
-        n = n->next;
-    }
-}
 
 void prepare_header(Array *array)
 {
@@ -260,15 +248,8 @@ void prepare_header(Array *array)
         cell = n->data;
         cell->shift_x += shift_x;
         shift_x += cell->nb_char + 2;
-        cell->shift_y=0;
         n = n->next;
     }
-}
-
-void print_array(Array *array, int x, int y)
-{
-    print_cells(array->header, x, y);
-    print_cells(array->cells, x, y + 3);
 }
 
 int wait_until(const char *s)

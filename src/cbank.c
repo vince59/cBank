@@ -11,6 +11,8 @@ extern Node *head_op;
 extern Node *head_cat;
 extern Node *head_acc;
 
+void dsp_cat2(void);
+
 int main()
 {
     load_db();
@@ -19,7 +21,6 @@ int main()
     {
         init_dsp_main();
         int ch = wait_until("123q");
-        printf("%c",ch);
         switch (ch)
         {
             case '3' :

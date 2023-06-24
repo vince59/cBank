@@ -16,60 +16,97 @@ extern Node *head_op;
 extern Node *head_cat;
 extern Node *head_acc;
 
-void load_db()
+
+void free_array(Array *array);
+void init_dsp_array(const char *title);
+void dsp_array(Array *(*func_array)(long int, int), const char *title, long total, int nb, int x, int y);
+Array *array_categories(long int start, int max_line);
+Array *array_account(long int start, int max_line);
+Array *array_stat(long int start, int max_line);
+
+
+/****************************
+ * 
+ *  TABLEAU DES STATISTIQUES
+ * 
+*/
+
+void dsp_stat()
 {
-    load_keyword();
-    load_operation();
-    load_category();
-    load_account();
+    long nb_cat = nb_node(head_cat);
+    //dsp_array(array_stat, " Statistiques ", nb_cat, 14, 2, 2);
 }
 
-void close_db()
+Array *array_stat(long int start, int max_line)
 {
-    free_list(head_kw);
-    free_list(head_cat);
-    free_list(head_op);
-    free_list(head_acc);
-}
+    Array *array = new_array();
+    int nb_col = 2;
+    Color header_color = {GREEN, BLACK};
+    Color line_color = {WHITE, BLACK};
+    Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
+    Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
 
-void draw_main_menu()
-{
-    Color color = {GREEN, BLACK};
-    char *menu[] = {"1 - Statistiques","2 - Soldes","3 - Catégories"};
-    for (int i = 0; i < 3; i++)
+    set_header(array, nb_col);
+
+    for (int c = 0; c < nb_col; c++)
     {
-        button(menu[i], color, 3, i+3);
-    }
-}
+        int col_nb_char = (c == 0 ? 4 : 20);
 
-void draw_main_button()
-{
-    Color color = {GREEN, BLACK};
-    char *buttons[] = {"Quitter"};
-    int pos_x = 1;
-    for (int i = 0; i < 1; i++)
+        Cell cell;
+        cell.content = (char *)malloc(sizeof(char) * col_nb_char);
+        cell.color = header_color;
+        cell.border = header_border;
+        cell.orientation = CENTER;
+        sprintf(cell.content, c == 0 ? "ID" : "Libellé");
+        cell.nb_char = col_nb_char;
+        set_cell(array, 0, c + 1, cell);
+    }
+
+    prepare_header(array);
+
+    Category *cat = NULL;
+    Node *n = head_cat;
+    int l = 0;
+    long int i = 0;
+    while (n != NULL)
     {
-        button(buttons[i], color, pos_x, 20);
-        pos_x += strlen(buttons[i]) + 2;
+        cat = n->data;
+        if (i >= start - 1)
+        {
+            add_row(array);
+            for (int c = 0; c < nb_col; c++)
+            {
+                Cell cell;
+                cell.content = (char *)malloc(sizeof(char) * (c == 0 ? 5 : strlen(cat->name)));
+                cell.color = line_color;
+                cell.border = line_border;
+                cell.orientation = LEFT;
+                if (c == 0)
+                    sprintf(cell.content, "%d", cat->id);
+                else
+                    sprintf(cell.content, "%s", cat->name);
+                set_cell(array, l + 1, c + 1, cell);
+            }
+            l++;
+        }
+        i++;
+        if (l == max_line)
+            break;
+        n = n->next;
     }
+    return array;
 }
 
-void draw_array_button()
-{
-    Color color = {GREEN, BLACK};
-    char *buttons[] = {"Premier", "+ Suivant", "- Précédent", "Dernier", "Quitter"};
-    int pos_x = 1;
-    for (int i = 0; i < 5; i++)
-    {
-        button(buttons[i], color, pos_x, 20);
-        pos_x += strlen(buttons[i]) + 2;
-    }
-}
+/****************************
+ * 
+ *  TABLEAU DES CATEGORIES
+ * 
+*/
 
-void draw_welcome(const char *msg)
+void dsp_cat()
 {
-    Border border = {1, 1, 1, 1, {YELLOW, BLACK}};
-    draw_box(1, 1, 79, 18, border, msg);
+    long nb_cat = nb_node(head_cat);
+    dsp_array(array_categories, " Liste des catégories ", nb_cat, 14, 2, 2);
 }
 
 Array *array_categories(long int start, int max_line)
@@ -130,6 +167,18 @@ Array *array_categories(long int start, int max_line)
         n = n->next;
     }
     return array;
+}
+
+/****************************
+ * 
+ *  TABLEAU DES COMPTES
+ * 
+*/
+
+void dsp_acc()
+{
+    long nb_acc = nb_node(head_acc);
+    dsp_array(array_account, " Solde des comptes ", nb_acc, 14, 2, 2);
 }
 
 Array *array_account(long int start, int max_line)
@@ -248,6 +297,12 @@ Array *array_account(long int start, int max_line)
     return array;
 }
 
+/****************************
+ * 
+ *  FONCTION GENERIQUES GESTION TABLEAU
+ * 
+*/
+
 void free_array(Array *array)
 {
     free_cells(array->header);
@@ -300,23 +355,23 @@ void dsp_array(Array *(*func_array)(long int, int), const char *title, long tota
     }
 }
 
-void dsp_cat()
+void draw_array_button()
 {
-    long nb_cat = nb_node(head_cat);
-    dsp_array(array_categories, " Liste des catégories ", nb_cat, 14, 2, 2);
+    Color color = {GREEN, BLACK};
+    char *buttons[] = {"Premier", "+ Suivant", "- Précédent", "Dernier", "Quitter"};
+    int pos_x = 1;
+    for (int i = 0; i < 5; i++)
+    {
+        button(buttons[i], color, pos_x, 20);
+        pos_x += strlen(buttons[i]) + 2;
+    }
 }
 
-void dsp_stat()
-{
-    long nb_cat = nb_node(head_cat);
-    //dsp_array(array_stat, " Statistiques ", nb_cat, 14, 2, 2);
-}
-
-void dsp_acc()
-{
-    long nb_acc = nb_node(head_acc);
-    dsp_array(array_account, " Solde des comptes ", nb_acc, 14, 2, 2);
-}
+/****************************
+ * 
+ *  FONCTION GENERIQUES BDD et AFFICHAGE
+ * 
+*/
 
 void init_dsp_main()
 {
@@ -325,3 +380,49 @@ void init_dsp_main()
     draw_main_button();
     draw_main_menu();
 }
+
+void load_db()
+{
+    load_keyword();
+    load_operation();
+    load_category();
+    load_account();
+}
+
+void close_db()
+{
+    free_list(head_kw);
+    free_list(head_cat);
+    free_list(head_op);
+    free_list(head_acc);
+}
+
+void draw_main_menu()
+{
+    Color color = {GREEN, BLACK};
+    char *menu[] = {"1 - Statistiques","2 - Soldes","3 - Catégories"};
+    for (int i = 0; i < 3; i++)
+    {
+        button(menu[i], color, 3, i+3);
+    }
+}
+
+void draw_main_button()
+{
+    Color color = {GREEN, BLACK};
+    char *buttons[] = {"Quitter"};
+    int pos_x = 1;
+    for (int i = 0; i < 1; i++)
+    {
+        button(buttons[i], color, pos_x, 20);
+        pos_x += strlen(buttons[i]) + 2;
+    }
+}
+
+
+void draw_welcome(const char *msg)
+{
+    Border border = {1, 1, 1, 1, {YELLOW, BLACK}};
+    draw_box(1, 1, 79, 18, border, msg);
+}
+

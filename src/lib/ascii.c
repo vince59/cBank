@@ -71,6 +71,13 @@ void button(const char *message, Color color, int x, int y)
     printf("%s", message);
 }
 
+void print(const char *message, Color color, int x, int y)
+{
+    set_color(color);
+    setCursorLocation(x, y);
+    printf("%s", message);
+}
+
 void draw_hline(int x, int y, int dx, Border border)
 {
     set_color(border.color);

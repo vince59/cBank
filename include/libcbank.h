@@ -223,6 +223,7 @@ void init_ascii();
 void close_ascii();
 int wait_until(const char *s);
 void free_cells(Node *n);
+void print(const char *message, Color color, int x, int y);
 
 /* Divers */
 

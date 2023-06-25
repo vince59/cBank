@@ -16,6 +16,10 @@ extern Node *head_op;
 extern Node *head_cat;
 extern Node *head_acc;
 
+Color header_color = {GREEN, BLACK};
+Color line_color = {WHITE, BLACK};
+Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
+Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
 
 /****************************
  *
@@ -27,38 +31,41 @@ void dsp_stat()
 {
 }
 
-
 /****************************
  *
  *  TABLEAU DES CATEGORIES
  *
  */
 
+Cell get_header_style_cell()
+{
+    Cell cell;
+    cell.color = header_color;
+    cell.border = header_border;
+    cell.orientation = CENTER;
+    return cell;
+}
+
+Cell get_line_style_cell()
+{
+    Cell cell;
+    cell.color = line_color;
+    cell.border = line_border;
+    cell.orientation = LEFT;
+    return cell;
+}
+
 void dsp_cat()
 {
-    Array *array = new_array();
+    Array *array = new_array(" Liste des catégories ");
     int nb_col = 2;
-    Color header_color = {GREEN, BLACK};
-    Color line_color = {WHITE, BLACK};
-    Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
-    Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
-    array->line_page = 14;
-    array->x = 2;
-    array->y = 2;
-    array->title=malloc(sizeof(char)*50);
-    strcpy(array->title, " Liste des catégories ");
 
     set_header(array, nb_col);
-
+    Cell cell = get_header_style_cell();
     for (int c = 0; c < nb_col; c++)
     {
         int col_nb_char = (c == 0 ? 4 : 20);
-
-        Cell cell;
         cell.content = (char *)malloc(sizeof(char) * col_nb_char);
-        cell.color = header_color;
-        cell.border = header_border;
-        cell.orientation = CENTER;
         sprintf(cell.content, c == 0 ? "ID" : "Libellé");
         cell.nb_char = col_nb_char;
         set_cell(array, 0, c + 1, cell);
@@ -69,17 +76,14 @@ void dsp_cat()
     Category *cat = NULL;
     Node *n = head_cat;
     int l = 0;
+    cell = get_line_style_cell();
     while (n != NULL)
     {
         cat = n->data;
         add_row(array);
         for (int c = 0; c < nb_col; c++)
         {
-            Cell cell;
             cell.content = (char *)malloc(sizeof(char) * (c == 0 ? 5 : strlen(cat->name)));
-            cell.color = line_color;
-            cell.border = line_border;
-            cell.orientation = LEFT;
             if (c == 0)
                 sprintf(cell.content, "%d", cat->id);
             else
@@ -100,24 +104,13 @@ void dsp_cat()
 
 void dsp_acc()
 {
-    Array *array = new_array();
+    Array *array = new_array(" Liste des comptes ");
     int nb_col = 3;
-    Color header_color = {GREEN, BLACK};
-    Color line_color = {WHITE, BLACK};
-    Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
-    Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
-    array->line_page = 10;
-    array->x = 2;
-    array->y = 2;
-    array->title=malloc(sizeof(char)*50);
-    strcpy(array->title, " Liste des comptes ");
-
     set_header(array, nb_col);
-
+    Cell cell = get_header_style_cell();
     for (int c = 0; c < nb_col; c++)
     {
         int col_nb_char;
-        Cell cell;
         switch (c)
         {
         case 0:
@@ -136,9 +129,6 @@ void dsp_acc()
             sprintf(cell.content, "Solde fin");
             break;
         }
-        cell.color = header_color;
-        cell.border = header_border;
-        cell.orientation = CENTER;
         cell.nb_char = col_nb_char;
         set_cell(array, 0, c + 1, cell);
     }
@@ -148,6 +138,7 @@ void dsp_acc()
     Account *acc = NULL;
     Node *n = head_acc;
     float global_balance = 0;
+    cell = get_line_style_cell();
     while (n != NULL)
     {
         acc = n->data;
@@ -155,10 +146,6 @@ void dsp_acc()
         add_row(array);
         for (int c = 0; c < nb_col; c++)
         {
-            Cell cell;
-            cell.color = line_color;
-            cell.border = line_border;
-            cell.orientation = LEFT;
             int col_nb_char;
             switch (c)
             {
@@ -166,6 +153,7 @@ void dsp_acc()
                 col_nb_char = 32;
                 cell.content = (char *)malloc(sizeof(char) * col_nb_char);
                 sprintf(cell.content, "%s - %s", acc->id, acc->name);
+                cell.orientation = LEFT;
                 break;
             case 1:
                 col_nb_char = 10;
@@ -188,12 +176,9 @@ void dsp_acc()
         n = n->next;
     }
     add_row(array);
+    cell.orientation = RIGHT;
     for (int c = 0; c < nb_col; c++)
     {
-        Cell cell;
-        cell.color = line_color;
-        cell.border = line_border;
-        cell.orientation = RIGHT;
         int col_nb_char;
         switch (c)
         {
@@ -219,7 +204,6 @@ void dsp_acc()
     dsp_array(array);
 }
 
-
 /****************************
  *
  *  FONCTION GENERIQUES GESTION TABLEAU
@@ -232,24 +216,18 @@ void free_array(Array *array)
     free_cells(array->cells);
     free_list(array->header);
     free_list(array->cells);
+    free(array->title);
     free(array);
 }
 
-void init_dsp_array(Array *array)
+void init_dsp_array(Array *array, long page)
 {
     clearScreen();
     draw_welcome(array->title);
-    draw_array_button();
+    draw_array_button(array, page);
 }
 
-void init_dsp_array2(Array *array)
-{
-    clearScreen();
-    draw_welcome(array->title);
-    draw_array_button();
-}
-
-void draw_array_button()
+void draw_array_button(Array *array, long page)
 {
     Color color = {GREEN, BLACK};
     char *buttons[] = {"Premier", "+ Suivant", "- Précédent", "Dernier", "Quitter"};
@@ -259,36 +237,39 @@ void draw_array_button()
         button(buttons[i], color, pos_x, 20);
         pos_x += strlen(buttons[i]) + 2;
     }
+    char mess[10];
+    sprintf(mess, "%lu / %lu", page, divide_rounded_up(array->nb_line, array->line_page));
+    print(mess, color, pos_x, 20);
 }
 
 void dsp_array(Array *array)
 {
-    long page=1;
-    
-    print_array(array,page);
+    long page = 1;
+
+    print_array(array, page);
     for (;;)
     {
         int ch = wait_until("p+-dq");
         switch (ch)
         {
         case '+':
-            if (array->nb_line >= (page*array->line_page))
+            if (array->nb_line >= (page * array->line_page))
                 page++;
             break;
         case '-':
-            if (page-1>0)
+            if (page - 1 > 0)
                 page--;
             break;
         case 'p':
-            page=1;
+            page = 1;
             break;
         case 'd':
-            page=array->nb_line%array->line_page;
+            page = divide_rounded_up(array->nb_line, array->line_page);
             break;
         }
         if (ch == 'q')
             break;
-        print_array(array,page);
+        print_array(array, page);
     }
     free_array(array);
 }
@@ -367,19 +348,19 @@ void print_line(Array *array, long page)
 {
     Cell *cell = NULL;
     Node *n = array->cells;
-    int i=-1;
-    long last_l=0;
+    int i = -1;
+    long last_l = 0;
     while (n != NULL)
     {
         cell = n->data;
-        if (cell->l>(page-1)*array->line_page && cell->l<=page*array->line_page)
+        if (cell->l > (page - 1) * array->line_page && cell->l <= page * array->line_page)
         {
-            if (cell->l!=last_l)
+            if (cell->l != last_l)
             {
                 i++;
-                last_l=cell->l;
+                last_l = cell->l;
             }
-            print_cell(cell, array->x + cell->shift_x, array->y +3 + i);
+            print_cell(cell, array->x + cell->shift_x, array->y + 3 + i);
         }
         n = n->next;
     }
@@ -387,8 +368,7 @@ void print_line(Array *array, long page)
 
 void print_array(Array *array, long page)
 {
-    init_dsp_array(array);
+    init_dsp_array(array, page);
     print_header(array);
     print_line(array, page);
 }
-

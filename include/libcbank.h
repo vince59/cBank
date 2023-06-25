@@ -213,7 +213,7 @@ void draw_hline(int x, int y, int dx, Border border);
 void draw_vline(int x, int y, int dy, Border border);
 void draw_box(int x, int y, int dx, int dy, Border border, const char *title);
 Cell *get_cell_at(Node *n, int l, int c);
-Array *new_array();
+Array *new_array(const char*);
 void set_header(Array *array, int nb_col);
 void add_row(Array *array);
 void set_cell(Array *array, int l, int c, Cell info);
@@ -241,6 +241,8 @@ long fmt_long_date(int year, int month, int day);
 char *fmt_fr_date(int year, int month, int day);
 void today (int *year, int *month, int *day);
 int get_days_in_month(int month, int year);
+// number
+long int divide_rounded_up(long int a, long int b);
 
 // string
 float cnv_float(char *sfloat);
@@ -253,7 +255,7 @@ void load_db();
 void close_db();
 void draw_main_button();
 void draw_main_menu();
-void draw_array_button();
+void draw_array_button(Array *array, long page);
 void draw_welcome(const char *msg);
 Array *array_categories(long int start, int max_line);
 void free_array(Array *array);
@@ -262,7 +264,7 @@ void init_dsp_main();
 void dsp_acc();
 void dsp_stat();
 void free_array(Array *array);
-void init_dsp_array(Array *array);
+void init_dsp_array(Array *array, long page);
 void dsp_cat(void);
 void dsp_array(Array *array);
 

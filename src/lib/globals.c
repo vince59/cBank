@@ -184,3 +184,11 @@ int find_char(const char *str, int target)
     }
     return -1; // Character not found
 }
+
+long int divide_rounded_up(long int a, long int b)
+{
+    long int result = a / b;
+    if (a % b != 0)
+        result++;
+    return result;
+}

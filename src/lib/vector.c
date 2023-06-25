@@ -40,6 +40,8 @@ void free_list(Node *head)
     }
 }
 
+// Retourn le nombre d'élément dans la liste
+
 long int nb_node(Node *head)
 {
     long int i = 0;

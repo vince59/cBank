@@ -141,13 +141,18 @@ Cell *get_cell_at(Node *n, int l, int c)
     return cell;
 }
 
-Array *new_array()
+Array *new_array(const char *title)
 {
     Array *array = (Array *)malloc(sizeof(Array));
     array->nb_col = 0;
     array->nb_line = 0;
     array->cells = NULL;
     array->header = NULL;
+    array->line_page = 14;
+    array->x = 2;
+    array->y = 2;
+    array->title=malloc(sizeof(char)*strlen(title));
+    strcpy(array->title,title);
     return array;
 }
 

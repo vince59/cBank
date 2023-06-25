@@ -37,24 +37,6 @@ void dsp_stat()
  *
  */
 
-Cell get_header_style_cell()
-{
-    Cell cell;
-    cell.color = header_color;
-    cell.border = header_border;
-    cell.orientation = CENTER;
-    return cell;
-}
-
-Cell get_line_style_cell()
-{
-    Cell cell;
-    cell.color = line_color;
-    cell.border = line_border;
-    cell.orientation = LEFT;
-    return cell;
-}
-
 void dsp_cat()
 {
     Array *array = new_array(" Liste des catégories ");
@@ -330,6 +312,24 @@ void draw_welcome(const char *msg)
 {
     Border border = {1, 1, 1, 1, {YELLOW, BLACK}};
     draw_box(1, 1, 79, 18, border, msg);
+}
+
+Cell get_header_style_cell()
+{
+    Cell cell;
+    cell.color = header_color;
+    cell.border = header_border;
+    cell.orientation = CENTER;
+    return cell;
+}
+
+Cell get_line_style_cell()
+{
+    Cell cell;
+    cell.color = line_color;
+    cell.border = line_border;
+    cell.orientation = LEFT;
+    return cell;
 }
 
 void print_header(Array *array)

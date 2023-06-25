@@ -267,5 +267,7 @@ void free_array(Array *array);
 void init_dsp_array(Array *array, long page);
 void dsp_cat(void);
 void dsp_array(Array *array);
+Cell get_header_style_cell();
+Cell get_line_style_cell();
 
 #endif

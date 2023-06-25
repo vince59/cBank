@@ -20,15 +20,99 @@ Color header_color = {GREEN, BLACK};
 Color line_color = {WHITE, BLACK};
 Border header_border = {1, 1, 1, 1, {CYAN, BLACK}};
 Border line_border = {0, 0, 1, 1, {CYAN, BLACK}};
+Color menu_color = {GREEN, BLACK};
+Color red_black = {RED, BLACK};
 
 /****************************
  *
- *  TABLEAU DES STATISTIQUES
+ *  CHARGEMENT DU FICHIER BANCAIRE BANQUE POP DU NORD
+ *
+ */
+
+void load(char *acc_id, char *file_name, int x, int *y)
+{
+    int nb_dup;
+    int nb_bpn_op = load_bpn_csv(acc_id, file_name, &nb_dup);
+    char str[50];
+    sprintf(str, "\tNombre de nouvelles opérations : %d\n", nb_bpn_op);
+    print(str, red_black, x, (*y)++);
+    sprintf(str, "\tNombre de doublons             : %d\n", nb_dup);
+    print(str, red_black, x, (*y)++);
+}
+
+void load_bpn()
+{
+    clearScreen();
+    draw_welcome(" Chargement fichier BPN ");
+
+    int year, month, day;
+    today(&year, &month, &day);
+    char *date = fmt_fr_date(year, month, day);
+    char ccbpn[200], liva[200], ldd[200], str[400];
+    sprintf(ccbpn, "/home/vincent/Téléchargements/%s_85391.csv", date);
+    sprintf(ldd, "/home/vincent/Téléchargements/%s_85392.csv", date);
+    sprintf(liva, "/home/vincent/Téléchargements/%s_85394.csv", date);
+
+    int x = 2, y = 4;
+
+    sprintf(str, "Traitement du fichier %s (CCBPN)\n", ccbpn);
+    print(str, line_color, x, y++);
+    if (is_file_exist(ccbpn))
+        load("CCBPN", ccbpn, x, &y);
+    else
+        print("\tFichier non trouvé !", header_color, x, y++);
+
+    sprintf(str, "Traitement du fichier %s (LIVA)\n", liva);
+    print(str, line_color, x, y++);
+    if (is_file_exist(liva))
+        load("LIVA", liva, x, &y);
+    else
+        print("\tFichier non trouvé !", header_color, x, y++);
+
+    sprintf(str, "Traitement du fichier %s (LDD)\n", ldd);
+    print(str, line_color, x, y++);
+    if (is_file_exist(ldd))
+        load("LDD", ldd, x, &y);
+    else
+        print("\tFichier non trouvé !", header_color, x, y++);
+
+    save_operation();
+    button("Quitter", menu_color, 1, 20);
+    wait_until("q");
+}
+
+/****************************
+ *
+ *  STATISTIQUES
  *
  */
 
 void dsp_stat()
 {
+    long nb = nb_node(head_op);
+    float balance = get_initial_balance();
+    float dispo = get_account_balance(find_acc_by_id("CCBPN"));
+    int year, month, day;
+    today(&year, &month, &day);
+    int nb_days = get_days_in_month(month, year);
+    char str[50];
+
+    clearScreen();
+    draw_welcome(" Statistiques ");
+
+    sprintf(str, "Nombre d'opérations           : %lu\n", nb);
+    print(str, line_color, 10, 3);
+    sprintf(str, "Date de la dernière opération : %s\n", fmt_date(get_last_op()->date));
+    print(str, line_color, 10, 4);
+    sprintf(str, "Solde départ au 31/12/2022    : %.2f\n", balance);
+    print(str, line_color, 10, 5);
+    sprintf(str, "Somme des liquidités          : %.2f\n", get_balance());
+    print(str, line_color, 10, 6);
+    sprintf(str, "Dispo par jour                : %.2f\n", dispo / (nb_days - day));
+    print(str, line_color, 10, 7);
+
+    button("Quitter", menu_color, 1, 20);
+    wait_until("q");
 }
 
 /****************************
@@ -42,6 +126,8 @@ void dsp_cat()
     Array *array = new_array(" Liste des catégories ");
     int nb_col = 2;
 
+    // constitution du header du tableau
+
     set_header(array, nb_col);
     Cell cell = get_header_style_cell();
     for (int c = 0; c < nb_col; c++)
@@ -54,6 +140,8 @@ void dsp_cat()
     }
 
     prepare_header(array);
+
+    // alimentation des lignes du tableau
 
     Category *cat = NULL;
     Node *n = head_cat;
@@ -88,6 +176,9 @@ void dsp_acc()
 {
     Array *array = new_array(" Liste des comptes ");
     int nb_col = 3;
+
+    // constitution du header du tableau
+
     set_header(array, nb_col);
     Cell cell = get_header_style_cell();
     for (int c = 0; c < nb_col; c++)
@@ -116,6 +207,9 @@ void dsp_acc()
     }
 
     prepare_header(array);
+
+    // alimentation des lignes du tableau
+
     int l = 0;
     Account *acc = NULL;
     Node *n = head_acc;
@@ -157,6 +251,9 @@ void dsp_acc()
 
         n = n->next;
     }
+
+    // Alimentation du footer
+
     add_row(array);
     cell.orientation = RIGHT;
     for (int c = 0; c < nb_col; c++)
@@ -288,22 +385,20 @@ void close_db()
 
 void draw_main_menu()
 {
-    Color color = {GREEN, BLACK};
-    char *menu[] = {"1 - Statistiques", "2 - Soldes", "3 - Catégories"};
-    for (int i = 0; i < 3; i++)
+    char *menu[] = {"1 - Statistiques", "2 - Soldes", "3 - Catégories", "4 - Chargement"};
+    for (int i = 0; i < 4; i++)
     {
-        button(menu[i], color, 3, i + 3);
+        button(menu[i], menu_color, 3, i + 3);
     }
 }
 
 void draw_main_button()
 {
-    Color color = {GREEN, BLACK};
     char *buttons[] = {"Quitter"};
     int pos_x = 1;
     for (int i = 0; i < 1; i++)
     {
-        button(buttons[i], color, pos_x, 20);
+        button(buttons[i], menu_color, pos_x, 20);
         pos_x += strlen(buttons[i]) + 2;
     }
 }

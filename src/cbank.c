@@ -20,18 +20,21 @@ int main()
     for (;;)
     {
         init_dsp_main();
-        int ch = wait_until("123q");
+        int ch = wait_until("1234q");
         switch (ch)
         {
-            case '3' :
-                dsp_cat();
-                break;
-            case '2' :
-                dsp_acc();
-                break;
-            case '1' :
-                dsp_stat();
-                break;
+        case '1':
+            dsp_stat();
+            break;
+        case '2':
+            dsp_acc();
+            break;
+        case '3':
+            dsp_cat();
+            break;
+        case '4':
+            load_bpn();
+            break;
         }
         if (ch == 'q')
             break;

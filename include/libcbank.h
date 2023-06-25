@@ -251,6 +251,7 @@ void remove_last_char(char* str);
 int find_char(const char *str, int target);
 
 // Cbank
+int load_bpn_csv(char *acc_id, char *file_name, int *nb_dup);
 void load_db();
 void close_db();
 void draw_main_button();
@@ -269,5 +270,6 @@ void dsp_cat(void);
 void dsp_array(Array *array);
 Cell get_header_style_cell();
 Cell get_line_style_cell();
+void load_bpn();
 
 #endif

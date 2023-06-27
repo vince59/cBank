@@ -61,6 +61,15 @@ char *fmt_int_date(int year, int month, int day)
     return str;
 }
 
+// converti m y en 01/2023
+
+char *fmt_int_month_year(int year, int month)
+{
+    char *str = malloc(sizeof(char) * 8);
+    sprintf(str, "%02d/%04d", month, year);
+    return str;
+}
+
 // converti d m y en 12012023
 
 char *fmt_fr_date(int year, int month, int day)

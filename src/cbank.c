@@ -11,8 +11,6 @@ extern Node *head_op;
 extern Node *head_cat;
 extern Node *head_acc;
 
-void dsp_cat2(void);
-
 int main()
 {
     load_db();
@@ -20,19 +18,22 @@ int main()
     for (;;)
     {
         init_dsp_main();
-        int ch = wait_until("1234q");
+        int ch = wait_until("12345q");
         switch (ch)
         {
         case '1':
-            dsp_stat();
+            dsp_stat_month();
             break;
         case '2':
-            dsp_acc();
+            dsp_stat();
             break;
         case '3':
-            dsp_cat();
+            dsp_acc();
             break;
         case '4':
+            dsp_cat();
+            break;
+        case '5':
             load_bpn();
             break;
         }

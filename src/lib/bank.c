@@ -25,6 +25,83 @@ Color red_black = {RED, BLACK};
 
 /****************************
  *
+ *  TABLEAU DES SOLDES PAR MOIS
+ *
+ */
+
+void dsp_stat_month()
+{
+    Array *array = new_array(" Soldes par mois ");
+    int nb_col = 3;
+    int col_nb_char = 12;
+
+    // constitution du header du tableau
+
+    set_header(array, nb_col);
+    Cell cell = get_header_style_cell();
+    for (int c = 0; c < nb_col; c++)
+    {
+        cell.content = (char *)malloc(sizeof(char) * col_nb_char);
+        switch (c)
+        {
+        case 0:
+            sprintf(cell.content, "Mois");
+            break;
+        case 1:
+            sprintf(cell.content, "Solde");
+            break;
+        case 2:
+            sprintf(cell.content, "Cumul");
+            break;
+        }
+        cell.nb_char = col_nb_char;
+        set_cell(array, 0, c + 1, cell);
+    }
+
+    prepare_header(array);
+
+    // alimentation des lignes du tableau
+
+    Node *head_stat = get_balance_by_month();
+
+    Stat *stat = NULL;
+    Node *n = head_stat;
+    float balance = get_initial_balance();
+    cell = get_line_style_cell();
+    int l = 0;
+    while (n != NULL)
+    {
+        stat = n->data;
+        balance += stat->amount;
+        add_row(array);
+        for (int c = 0; c < nb_col; c++)
+        {
+            cell.content = (char *)malloc(sizeof(char) * col_nb_char);
+            switch (c)
+            {
+            case 0:
+                cell.orientation=CENTER;
+                sprintf(cell.content, "%s",fmt_int_month_year(stat->year, stat->month));
+                break;
+            case 1:
+                cell.orientation = LEFT;
+                sprintf(cell.content, "%10.2f",stat->amount);
+                break;
+            case 2:
+                cell.orientation = LEFT;
+                sprintf(cell.content, "%10.2f",balance);
+                break;
+            }
+            set_cell(array, l + 1, c + 1, cell);
+        }
+        l++;
+        n = n->next;
+    }
+    dsp_array(array);
+}
+
+/****************************
+ *
  *  CHARGEMENT DU FICHIER BANCAIRE BANQUE POP DU NORD
  *
  */
@@ -385,8 +462,8 @@ void close_db()
 
 void draw_main_menu()
 {
-    char *menu[] = {"1 - Statistiques", "2 - Soldes", "3 - Catégories", "4 - Chargement"};
-    for (int i = 0; i < 4; i++)
+    char *menu[] = {"1 - Soldes par mois", "2 - Statistiques", "3 - Soldes", "4 - Catégories", "5 - Chargement"};
+    for (int i = 0; i < 5; i++)
     {
         button(menu[i], menu_color, 3, i + 3);
     }

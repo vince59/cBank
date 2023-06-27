@@ -241,6 +241,7 @@ long fmt_long_date(int year, int month, int day);
 char *fmt_fr_date(int year, int month, int day);
 void today (int *year, int *month, int *day);
 int get_days_in_month(int month, int year);
+char *fmt_int_month_year(int year, int month);
 // number
 long int divide_rounded_up(long int a, long int b);
 
@@ -271,5 +272,6 @@ void dsp_array(Array *array);
 Cell get_header_style_cell();
 Cell get_line_style_cell();
 void load_bpn();
+void dsp_stat_month();
 
 #endif

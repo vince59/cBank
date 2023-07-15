@@ -83,7 +83,7 @@ Node *get_operation_by_category()
     while (n != NULL)
     {
         stat = n->data;
-        stat->list = sort_operation_by_date(stat->list);
+        stat->list = sort_operation_by_date(stat->list,1);
         n = n->next;
     }
     return head_stat;

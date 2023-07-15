@@ -262,7 +262,7 @@ Operation *get_last_op()
 
 // tri les opérations par date
 
-Node *sort_operation_by_date(Node *head)
+Node *sort_operation_by_date(Node *head, int asc)
 {
     if (head == NULL || head->next == NULL)
     {
@@ -284,7 +284,7 @@ Node *sort_operation_by_date(Node *head)
         {
             Operation *op1 = ptr1->data;
             Operation *op2 = ptr1->next->data;
-            if (op1->date > op2->date)
+            if (asc==1?op1->date > op2->date:op1->date < op2->date)
             {
                 // Swap the nodes
                 Node *temp = ptr1->next;

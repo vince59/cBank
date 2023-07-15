@@ -62,7 +62,8 @@ int main()
     load_keyword();
     load_operation();
     load_category();
-    int nb = auto_set_category_ops();
+    Node *n=NULL;
+    int nb = auto_set_category_ops(&n,1);
 
     printf("%d opération(s) classée(s) automatiquement\n", nb);
     save_operation();

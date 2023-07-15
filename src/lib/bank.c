@@ -31,9 +31,9 @@ Color red_black = {RED, BLACK};
 
 void class_op()
 {
-        int nb = auto_set_category_ops();
-
-    printf("%d opération(s) classée(s) automatiquement\n", nb);
+    Node *op_cla = NULL;
+    auto_set_category_ops(&op_cla, 0);
+    disp_op(" Liste des opérations classées ", op_cla,0);
 }
 
 /****************************
@@ -42,9 +42,21 @@ void class_op()
  *
  */
 
-void disp_op(char *acc)
+void disp_nc_op()
 {
-    Array *array = new_array(" Liste des opérations ");
+    disp_op(" Liste des opérations non classées ", head_op, 1);
+}
+
+void disp_all_op()
+{
+    disp_op(" Liste des opérations ", head_op, 0);
+}
+
+void disp_op(char *title, Node *lst_op, int filter)
+{
+    Node *head_stat = sort_operation_by_date(lst_op, 0);
+
+    Array *array = new_array(title);
     int nb_col = 5;
     int col_nb_char = 12;
 
@@ -59,29 +71,31 @@ void disp_op(char *acc)
         {
         case 0:
             sprintf(cell.content, "Date");
+            cell.nb_char = 8;
             break;
         case 1:
             sprintf(cell.content, "Compte");
+            cell.nb_char = 5;
             break;
         case 2:
             sprintf(cell.content, "libelle");
+            cell.nb_char = 23;
             break;
         case 3:
             sprintf(cell.content, "Catégorie");
+            cell.nb_char = 15;
             break;
         case 4:
             sprintf(cell.content, "Montant");
+            cell.nb_char = col_nb_char;
             break;
         }
-        cell.nb_char = col_nb_char;
         set_cell(array, 0, c + 1, cell);
     }
 
     prepare_header(array);
 
     // alimentation des lignes du tableau
-
-    Node *head_stat = sort_operation_by_date(head_op);
 
     Operation *op = NULL;
     Node *n = head_stat;
@@ -90,37 +104,40 @@ void disp_op(char *acc)
     while (n != NULL)
     {
         op = n->data;
-        add_row(array);
-        for (int c = 0; c < nb_col; c++)
-        {
-            cell.content = (char *)malloc(sizeof(char) * col_nb_char);
-            switch (c)
+        //if (filter == 0 || (filter == 1 && op->category_id == 0))
+        //{
+            add_row(array);
+            for (int c = 0; c < nb_col; c++)
             {
-            case 0:
-                cell.orientation=CENTER;
-                sprintf(cell.content,"%s", fmt_short_date(op->date));
-                break;
-            case 1:
-                cell.orientation=CENTER;
-                sprintf(cell.content,"%s",op->account_id);
-                break;
-            case 2:
-                cell.orientation = LEFT;
-                sprintf(cell.content,"%.11s",op->bank_lib1);
-                break;
-            case 3:
-                cell.orientation = LEFT;
-                Category *tmp = find_category_by_id(op->category_id);
-                sprintf(cell.content,"%.11s",tmp==NULL?"NC":tmp->name);
-                break;
-            case 4:
-                cell.orientation = LEFT;
-                sprintf(cell.content, "%10.2f",op->amount);
-                break;
+                cell.content = (char *)malloc(sizeof(char) * col_nb_char);
+                switch (c)
+                {
+                case 0:
+                    cell.orientation = CENTER;
+                    sprintf(cell.content, "%s", fmt_short_date(op->date));
+                    break;
+                case 1:
+                    cell.orientation = CENTER;
+                    sprintf(cell.content, "%s", op->account_id);
+                    break;
+                case 2:
+                    cell.orientation = LEFT;
+                    sprintf(cell.content, "%.23s", op->bank_lib1);
+                    break;
+                case 3:
+                    cell.orientation = LEFT;
+                    Category *tmp = find_category_by_id(op->category_id);
+                    sprintf(cell.content, "%.15s", tmp == NULL ? "NC" : tmp->name);
+                    break;
+                case 4:
+                    cell.orientation = LEFT;
+                    sprintf(cell.content, "%10.2f", op->amount);
+                    break;
+                }
+                set_cell(array, l + 1, c + 1, cell);
             }
-            set_cell(array, l + 1, c + 1, cell);
-        }
-        l++;
+            l++;
+        //}
         n = n->next;
     }
     dsp_array(array);
@@ -183,16 +200,16 @@ void dsp_stat_month()
             switch (c)
             {
             case 0:
-                cell.orientation=CENTER;
-                sprintf(cell.content, "%s",fmt_int_month_year(stat->year, stat->month));
+                cell.orientation = CENTER;
+                sprintf(cell.content, "%s", fmt_int_month_year(stat->year, stat->month));
                 break;
             case 1:
                 cell.orientation = LEFT;
-                sprintf(cell.content, "%10.2f",stat->amount);
+                sprintf(cell.content, "%10.2f", stat->amount);
                 break;
             case 2:
                 cell.orientation = LEFT;
-                sprintf(cell.content, "%10.2f",balance);
+                sprintf(cell.content, "%10.2f", balance);
                 break;
             }
             set_cell(array, l + 1, c + 1, cell);
@@ -565,8 +582,8 @@ void close_db()
 
 void draw_main_menu()
 {
-    char *menu[] = {"1 - Soldes par mois", "2 - Statistiques", "3 - Soldes", "4 - Catégories", "5 - Chargement", "6 - Classement auto","7 - Opérations"};
-    for (int i = 0; i < 7; i++)
+    char *menu[] = {"1 - Soldes par mois", "2 - Statistiques", "3 - Soldes", "4 - Catégories", "5 - Chargement", "6 - Classement auto", "7 - Opérations non classées", "8 - Toutes les opérations"};
+    for (int i = 0; i < 8; i++)
     {
         button(menu[i], menu_color, 3, i + 3);
     }

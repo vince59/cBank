@@ -54,7 +54,7 @@ int load_category(void);
 Category *add_category(const char *name);
 void print_categories(void);
 Category *find_category_by_id(int cat_id);
-int auto_set_category_ops(void);
+int auto_set_category_ops(Node **op_cla,int cli);
 
 /* Opération */
 
@@ -87,7 +87,7 @@ Id next_operation_id(void);
 int chk_duplicate_operation(Operation *op_curr);
 Node *find_ops_by_cat_id(Node *hop,int cat_id);
 Operation * get_last_op(void);
-Node *sort_operation_by_date(Node *head);
+Node *sort_operation_by_date(Node *head, int asc);
 
 /* Mots clés */
 
@@ -277,5 +277,7 @@ void load_bpn();
 void dsp_stat_month();
 void class_op();
 void disp_op();
+void disp_all_op();
+void disp_nc_op();
 
 #endif

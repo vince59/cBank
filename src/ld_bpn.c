@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
                 load("LDD", ldd);
             }
 
-            int nb = auto_set_category_ops();
+            int nb = auto_set_category_ops(NULL,1);
             printf("%d opération(s) classée(s) automatiquement\n", nb);
             save_operation();
         }

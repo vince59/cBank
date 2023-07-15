@@ -130,12 +130,13 @@ Category *find_category_by_id(int cat_id)
 
 // Classe automatiquement les écritures non classées 
 
-int auto_set_category_ops(void)
+int auto_set_category_ops(Node **op_cla,int cli)
 {
     Node *head_sc = struct_kw();
     Operation *op = NULL;
     Node *n = head_op;
     int nb = 0;
+    *op_cla=NULL;
     while (n != NULL) // Parcours des opérations
     {
         op = n->data;
@@ -156,11 +157,12 @@ int auto_set_category_ops(void)
             if (op->category_id > 0)
             {
                 nb++;
-                print_operation(op);
-                printf("Opération classée automatiquement -> %s\n", find_category_by_id(op->category_id)->name);
-                if (nb_db > 1)
+                if (cli==1) print_operation(op); // mode ligne de cmd
+                if (cli==1) printf("Opération classée automatiquement -> %s\n", find_category_by_id(op->category_id)->name);
+                add_node(op_cla, op);
+                if (nb_db > 1 && cli==1)
                     printf("Attention il y a deux catégories correspondant aux mots clé !!\n");
-                printf("---\n");
+                if (cli==1) printf("---\n");
             }
             raz_scoring(head_sc);
         }

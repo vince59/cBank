@@ -220,7 +220,7 @@ void print_cell(Cell *cell, int x, int y)
 {
     print_border(cell, x, y);
     set_color(cell->color);
-    char *str = malloc(sizeof(char) * cell->nb_char + 1);
+    char *str = malloc(sizeof(char) * (cell->nb_char + 1));
     strncpy(str, cell->content, cell->nb_char);
     str[cell->nb_char] = '\0';
     switch (cell->orientation)

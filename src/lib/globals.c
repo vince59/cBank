@@ -43,12 +43,23 @@ void get_ymd(long date, int *year, int *month, int *day)
 
 // converti l'entier long 20230112 en 12/01/2023
 
-char *fmt_date(long date)
+char *fmt_date(long date) 
 {
     char *str = malloc(sizeof(char) * 11);
     int year, month, day;
     get_ymd(date, &year, &month, &day);
     sprintf(str, "%02d/%02d/%04d", day, month, year);
+    return str;
+}
+
+// converti l'entier long 20230112 en 12/01/23
+
+char *fmt_short_date(long date) 
+{
+    char *str = malloc(sizeof(char) * 11);
+    int year, month, day;
+    get_ymd(date, &year, &month, &day);
+    sprintf(str, "%02d/%02d/%02d", day, month, year-2000);
     return str;
 }
 
@@ -58,6 +69,15 @@ char *fmt_int_date(int year, int month, int day)
 {
     char *str = malloc(sizeof(char) * 11);
     sprintf(str, "%02d/%02d/%04d", day, month, year);
+    return str;
+}
+
+// converti d m y en 12/01/23
+
+char *fmt_int_short_date(int year, int month, int day)
+{
+    char *str = malloc(sizeof(char) * 11);
+    sprintf(str, "%02d/%02d/%02d", day, month, year-2000);
     return str;
 }
 

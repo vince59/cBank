@@ -25,6 +25,109 @@ Color red_black = {RED, BLACK};
 
 /****************************
  *
+ *  CLASSEMENT AUTOMATIQUE DES OPERATIONS
+ *
+ */
+
+void class_op()
+{
+        int nb = auto_set_category_ops();
+
+    printf("%d opération(s) classée(s) automatiquement\n", nb);
+}
+
+/****************************
+ *
+ *  AFFICHAGE DES OPERATIONS
+ *
+ */
+
+void disp_op(char *acc)
+{
+    Array *array = new_array(" Liste des opérations ");
+    int nb_col = 5;
+    int col_nb_char = 12;
+
+    // constitution du header du tableau
+
+    set_header(array, nb_col);
+    Cell cell = get_header_style_cell();
+    for (int c = 0; c < nb_col; c++)
+    {
+        cell.content = (char *)malloc(sizeof(char) * col_nb_char);
+        switch (c)
+        {
+        case 0:
+            sprintf(cell.content, "Date");
+            break;
+        case 1:
+            sprintf(cell.content, "Compte");
+            break;
+        case 2:
+            sprintf(cell.content, "libelle");
+            break;
+        case 3:
+            sprintf(cell.content, "Catégorie");
+            break;
+        case 4:
+            sprintf(cell.content, "Montant");
+            break;
+        }
+        cell.nb_char = col_nb_char;
+        set_cell(array, 0, c + 1, cell);
+    }
+
+    prepare_header(array);
+
+    // alimentation des lignes du tableau
+
+    Node *head_stat = sort_operation_by_date(head_op);
+
+    Operation *op = NULL;
+    Node *n = head_stat;
+    cell = get_line_style_cell();
+    int l = 0;
+    while (n != NULL)
+    {
+        op = n->data;
+        add_row(array);
+        for (int c = 0; c < nb_col; c++)
+        {
+            cell.content = (char *)malloc(sizeof(char) * col_nb_char);
+            switch (c)
+            {
+            case 0:
+                cell.orientation=CENTER;
+                sprintf(cell.content,"%s", fmt_short_date(op->date));
+                break;
+            case 1:
+                cell.orientation=CENTER;
+                sprintf(cell.content,"%s",op->account_id);
+                break;
+            case 2:
+                cell.orientation = LEFT;
+                sprintf(cell.content,"%.11s",op->bank_lib1);
+                break;
+            case 3:
+                cell.orientation = LEFT;
+                Category *tmp = find_category_by_id(op->category_id);
+                sprintf(cell.content,"%.11s",tmp==NULL?"NC":tmp->name);
+                break;
+            case 4:
+                cell.orientation = LEFT;
+                sprintf(cell.content, "%10.2f",op->amount);
+                break;
+            }
+            set_cell(array, l + 1, c + 1, cell);
+        }
+        l++;
+        n = n->next;
+    }
+    dsp_array(array);
+}
+
+/****************************
+ *
  *  TABLEAU DES SOLDES PAR MOIS
  *
  */
@@ -462,8 +565,8 @@ void close_db()
 
 void draw_main_menu()
 {
-    char *menu[] = {"1 - Soldes par mois", "2 - Statistiques", "3 - Soldes", "4 - Catégories", "5 - Chargement"};
-    for (int i = 0; i < 5; i++)
+    char *menu[] = {"1 - Soldes par mois", "2 - Statistiques", "3 - Soldes", "4 - Catégories", "5 - Chargement", "6 - Classement auto","7 - Opérations"};
+    for (int i = 0; i < 7; i++)
     {
         button(menu[i], menu_color, 3, i + 3);
     }

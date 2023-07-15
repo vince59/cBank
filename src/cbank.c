@@ -18,7 +18,7 @@ int main()
     for (;;)
     {
         init_dsp_main();
-        int ch = wait_until("12345q");
+        int ch = wait_until("1234567q");
         switch (ch)
         {
         case '1':
@@ -35,6 +35,12 @@ int main()
             break;
         case '5':
             load_bpn();
+            break;
+        case '6':
+            class_op();
+            break;
+        case '7':
+            disp_op();
             break;
         }
         if (ch == 'q')

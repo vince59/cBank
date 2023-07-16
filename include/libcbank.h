@@ -276,7 +276,7 @@ Cell get_line_style_cell();
 void load_bpn();
 void dsp_stat_month();
 void class_op();
-void disp_op();
+void disp_op(char *title, Node **lst_op, int filter);
 void disp_all_op();
 void disp_nc_op();
 

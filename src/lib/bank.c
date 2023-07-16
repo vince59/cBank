@@ -33,7 +33,8 @@ void class_op()
 {
     Node *op_cla = NULL;
     auto_set_category_ops(&op_cla, 0);
-    disp_op(" Liste des opérations classées ", op_cla,0);
+    save_operation();
+    disp_op(" Liste des opérations classées ", &op_cla,0);
 }
 
 /****************************
@@ -44,17 +45,17 @@ void class_op()
 
 void disp_nc_op()
 {
-    disp_op(" Liste des opérations non classées ", head_op, 1);
+    disp_op(" Liste des opérations non classées ", &head_op, 1);
 }
 
 void disp_all_op()
 {
-    disp_op(" Liste des opérations ", head_op, 0);
+    disp_op(" Liste des opérations ", &head_op, 0);
 }
 
-void disp_op(char *title, Node *lst_op, int filter)
+void disp_op(char *title, Node **lst_op, int filter)
 {
-    Node *head_stat = sort_operation_by_date(lst_op, 0);
+    *lst_op = sort_operation_by_date(*lst_op, 0);
 
     Array *array = new_array(title);
     int nb_col = 5;
@@ -98,14 +99,14 @@ void disp_op(char *title, Node *lst_op, int filter)
     // alimentation des lignes du tableau
 
     Operation *op = NULL;
-    Node *n = head_stat;
+    Node *n = *lst_op;
     cell = get_line_style_cell();
     int l = 0;
     while (n != NULL)
     {
         op = n->data;
-        //if (filter == 0 || (filter == 1 && op->category_id == 0))
-        //{
+        if (filter == 0 || (filter == 1 && op->category_id == 0))
+        {
             add_row(array);
             for (int c = 0; c < nb_col; c++)
             {
@@ -137,7 +138,7 @@ void disp_op(char *title, Node *lst_op, int filter)
                 set_cell(array, l + 1, c + 1, cell);
             }
             l++;
-        //}
+        }
         n = n->next;
     }
     dsp_array(array);
